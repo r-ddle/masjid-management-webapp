@@ -1,0 +1,4 @@
+
+*.vsidx
+/app/packages
+/app/bin/Debug

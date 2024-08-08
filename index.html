@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="masjid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masjid Management System</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900,1&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-display">
+    <style>
+        .input-error {
+            border-color: var(--fallback-er,oklch(var(--er)/var(--tw-border-opacity)));
+            outline-color: var(--fallback-er,oklch(var(--er)/1));
+        }
+    </style>
+    <div class="card">
+      <div class="card-body w-96 mx-auto flex input-error">
+        <h2 class="card-title">Masjid Management</h2>
+        <form
+  id="loginForm"
+  onsubmit="event.preventDefault(); login(this.username.value, this.password.value);"
+>
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">Username</span>
+    </label>
+    <div class="relative flex items-center gap-2">
+      <svg class="h-4 w-4 opacity-70 absolute left-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>
+      <input
+        type="text"
+        name="username"
+        placeholder="Enter your Username"
+        class="inputuser input input-bordered pl-8 w-96"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">Password</span>
+    </label>
+    <div class="relative flex items-center gap-2">
+      <svg class="h-4 w-4 opacity-70 absolute left-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Zm-68-56a12,12,0,1,1-12-12A12,12,0,0,1,140,152Z"></path></svg>
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter your Password"
+        class="inputpass input input-bordered pl-8 w-96"
+        required
+      />
+    </div>
+  </div>
+  <button
+    type="submit"
+    onclick="handleLogin()"
+    class="btn btn-primary mt-5 w-full hover:-translate-y-1"
+  >
+    Login
+  </button>
+</form>
+    </div>
+    <script>
+      window.chrome = window.chrome || {};
+      chrome.webview = chrome.webview || {};
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>

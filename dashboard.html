@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="masjid">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjid Management System - Dashboard</title>
+    <link rel="stylesheet" href="./ouput.css">
+    <link rel="stylesheet" href="./output.css">
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900,1&display=swap" rel="stylesheet">    
+</head>
+<body class="bg-gray-100 font-display">
+    <body class="text-base-content">
+        <!-- this da sidepanel -->
+        <div class="drawer lg:drawer-open">
+            <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-col">
+                <!-- Navbar -->
+                <div class="w-full navbar bg-base-200">
+                    <div class="flex-none lg:hidden">
+                        <label for="my-drawer" class="btn btn-square btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </label>
+                    </div> 
+                    <div class="flex-1 flex justify-center items-center">
+                        <h2 id="location-header" class="text-2xl font-bold mr-4" data-short-form="">Select a Location</h2>
+                        <div class="dropdown dropdown-bottom">
+                            <div tabindex="0" role="button" class="btn bg-primary m-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="mr-2"><path d="M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z"></path></svg>
+                                Select Location
+                            </div>
+                            <!-- istg if u remove something from here im leaving '=' -->
+                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                                <li onclick="loadLocation('AraliyaUyana', 'Araliya Uyana')"><a>Araliya Uyana</a></li>
+                                <li onclick="loadLocation('AsiriUyana', 'Asiri Uyana')"><a>Asiri Uyana</a></li>
+                                <li onclick="loadLocation('Bandara', 'Bandaranayakapura')"><a>Bandaranayakapura</a></li>
+                                <li onclick="loadLocation('Bangala', 'Bangalawatte')"><a>Bangalawatte</a></li>
+                                <li onclick="loadLocation('Boga', 'Bogahawila')"><a>Bogahawila</a></li>
+                                <li onclick="loadLocation('Dick', 'Dickhenawatte')"><a>Dickhenawatte</a></li>
+                                <li onclick="loadLocation('Getuba', 'GetubaDuwa')"><a>GetubaDuwa</a></li>
+                                <li onclick="loadLocation('Golden', 'Golden Medows')"><a>Golden Medows</a></li>
+                                <li onclick="loadLocation('Green', 'Green Vally')"><a>Green Vally</a></li>
+                                <li onclick="loadLocation('Homa', 'Homagama')"><a>Homagama</a></li>
+                                <li onclick="loadLocation('Kaha', 'KahaThuduwa')"><a>KahaThuduwa</a></li>
+                                <li onclick="loadLocation('Kirigampa', 'Kirigampamuwuna')"><a>Kirigampamuwuna</a></li>
+                                <li onclick="loadLocation('Kiriwath', 'Kiriwaththuduwa')"><a>Kiriwaththuduwa</a></li>
+                                <li onclick="loadLocation('Madara', 'Madara Uyana')"><a>Madara Uyana</a></li>
+                                <li onclick="loadLocation('Makumbura', 'Makumbura Kottawa')"><a>Makumbura Kottawa</a></li>
+                                <li onclick="loadLocation('Melwatte', 'Melwatte Siyabalgoda')"><a>Melwatte Siyabalgoda</a></li>
+                                <li onclick="loadLocation('Nadun', 'Nadun Uyana')"><a>Nadun Uyana</a></li>
+                                <li onclick="loadLocation('Pelan', 'Pelanwatte')"><a>Pelanwatte</a></li>
+                                <li onclick="loadLocation('Pink', 'Pink Row')"><a>Pink Row</a></li>
+                                <li onclick="loadLocation('Polgas', 'Polgasowita Road')"><a>Polgasowita Road</a></li>
+                                <li onclick="loadLocation('Prasan', 'Prasanna Uyana')"><a>Prasanna Uyana</a></li>
+                                <li onclick="loadLocation('Sadun', 'Sadunpura')"><a>Sadunpura</a></li>
+                                <li onclick="loadLocation('Salgas', 'Salgas Mawatha')"><a>Salgas Mawatha</a></li>
+                                <li onclick="loadLocation('Samanala', 'Samanala Place')"><a>Samanala Place</a></li>
+                                <li onclick="loadLocation('Siddam', 'Siddamulla')"><a>Siddamulla</a></li>
+                                <li onclick="loadLocation('Wasana', 'Wasanawatte')"><a>Wasanawatte</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- add member button -->
+                    <div class="flex-none">
+                        <button onclick="showAddMemberRow()" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                            </svg>
+                            Add Member
+                        </button>
+                    </div>
+                </div>
+                <!-- Add Member Row -->
+                <div id="add-member-row" class="hidden mb-4 p-4 bg-base-200 rounded-lg shadow">
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" id="new-member-name" placeholder="Enter name" class="input input-bordered w-full" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Phone Number</span>
+                            </label>
+                            <input type="tel" id="new-member-telephone" placeholder="Enter phone number" class="input input-bordered w-full" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" id="new-member-address" placeholder="Enter address" class="input input-bordered w-full" />
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <button onclick="addNewMember()" class="btn btn-primary">Add</button>
+                            <button onclick="cancelAddMember()" class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page content -->
+                <div class="p-4 rounded-full">
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td><h1 class="text-l font-bold">Please Select a Location to Display Data</h1></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> 
+            <!-- Side Panel -->
+            <div class="drawer-side">
+                <label for="my-drawer" class="drawer-overlay"></label>
+                <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
+                    <li class="mb-2">
+                        <a class="text-xl font-bold">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mr-2 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            Masjid Management
+                        </a>
+                    </li>
+                    <li><a class="active">Home</a></li>
+                    <li>
+                        <details>
+                            <summary>Janaza Member Details</summary>
+                            <ul>
+                                <li><a>Scheme</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+
+    <script src="./dashbaord.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
