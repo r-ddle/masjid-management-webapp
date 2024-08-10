@@ -1,3 +1,36 @@
+// when the site loads this shit pops up
+document.addEventListener('DOMContentLoaded', function() {
+    const janazaDetails = document.getElementById('janaza-details');
+    const mahallaDetails = document.getElementById('mahallah-details');
+    const janazaContent = document.getElementById('janaza-content');
+    const mahallaContent = document.getElementById('mahallah-content');
+    const locationSelector = document.getElementById('location-selector');
+
+    janazaContent.style.display = 'block';
+    mahallaContent.style.display = 'none';
+    locationSelector.style.display = 'block';
+    updateHeaderText('Select a Location');
+
+    janazaDetails.addEventListener('click', function() {
+        janazaContent.style.display = 'block';
+        mahallaContent.style.display = 'none';
+        locationSelector.style.display = 'block';
+        janazaDetails.classList.add('active');
+        mahallaDetails.classList.remove('active');
+        updateHeaderText('Select a Location');
+    });
+
+    mahallaDetails.addEventListener('click', function() {
+        janazaContent.style.display = 'none';
+        mahallaContent.style.display = 'block';
+        locationSelector.style.display = 'none';
+        mahallaDetails.classList.add('active');
+        janazaDetails.classList.remove('active');
+        updateHeaderText('Mahallah Member Details');
+        loadMahallaMembers();
+    });
+});
+
 // Let Content Load and check if webview works if not then we screwed fr
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
@@ -12,6 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadLocation(location) {
     console.log(`Loading location: ${location}`);
     fetchMembersAndPopulateTable(location);
+}
+
+function loadMahallaMembers() {
+    chrome.webview.postMessage({ action: "getMahallaMembers" });
 }
 
 // Ask csharp "boi gimme them members list asap"
@@ -29,7 +66,6 @@ function handleMembers(location, membersJson) {
     console.log(`Received ${location} members data:`, membersJson);
     populateTable(membersJson);
 }
-
 chrome.webview.addEventListener('message', (event) => {
     console.log("Received message from WebView:", event);
     const { action, data } = event;
@@ -38,6 +74,22 @@ chrome.webview.addEventListener('message', (event) => {
         handleMembers(location, data.members);
     }
 });
+
+function handleMahallaMembers(membersJson) {
+    console.log(`Received Mahallah members data:`, membersJson);
+    const tableBody = document.getElementById("mahallah-table-body");
+    if (!tableBody) {
+        console.error("Mahallah table body not found");
+        return;
+    }
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    const members = JSON.parse(membersJson);
+    members.forEach((member) => {
+        const row = createMahallaTableRow(member);
+        tableBody.innerHTML += row;
+    });
+}
 
 // touch this code and your entire bloodline is gone ~g0j0
 function updatePaymentStatus(memberId, month, status) {
@@ -147,6 +199,55 @@ function createTableRow(member) {
                         <span class="flex items-center justify-center font-display">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="w-4 h-4 mr-2"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path></svg>
                             Delete
+                        </span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `;
+}
+
+function createMahallaTableRow(member) {
+    return `
+        <tr id="row-${member.Id}" class="font-display">
+            <td class="p-4 border-b border-blue-gray-50">
+                <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    ${member.Zone || 'N/A'}
+                </p>
+            </td>
+            <td class="p-4 border-b border-blue-gray-50">
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col">
+                        <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="name-${member.Id}">
+                            ${member.Name || 'N/A'}
+                        </p>
+                        <input type="text" name="username" placeholder="Enter your Username" class="inputuser input input-bordered pl-2 w-48 hidden" id="name-input-${member.Id}" value="${member.Name || ''}" required>
+                    </div>
+                </div>
+            </td>
+            <td class="p-4 border-b border-blue-gray-50">
+                <div class="flex flex-col">
+                    <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="address-${member.Id}">
+                        ${member.Address || 'N/A'}
+                    </p>
+                    <input type="text" name="address" placeholder="Enter your Address" class="inputuser input input-bordered pl-2 w-48 hidden" id="address-input-${member.Id}" value="${member.Address || ''}" required>
+                </div>
+            </td>
+            <td class="p-4 border-b border-blue-gray-50">
+                <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="telephone-${member.Id}">
+                    ${member.Telephone || 'N/A'}
+                </p>
+                <input type="text" name="telephone" placeholder="Enter your Telephone" class="inputuser input input-bordered pl-2 w-48 hidden" id="telephone-input-${member.Id}" value="${member.Telephone || ''}" required>
+            </td>
+            <td class="p-4 border-b border-blue-gray-50">
+                <div class="flex flex-col items-start gap-2">
+                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button" onclick="editMember('${member.Id}')" id="edit-button-${member.Id}">
+                        <span class="flex items-center justify-center font-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4 mr-2">
+                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
+                            </svg>
+                            Edit
                         </span>
                     </button>
                 </div>
@@ -334,7 +435,7 @@ function handleDeleteMemberResult(success, memberId) {
 // this shows what location ur currently viewing I See you jhon yes you  from Dickhenawatte
 function loadLocation(shortForm, fullName) {
     const locationHeader = document.getElementById('location-header');
-    locationHeader.textContent = fullName;
+    updateHeaderText(fullName);
     locationHeader.dataset.shortForm = shortForm;
     console.log(`Location set: ${fullName}, shortForm: ${shortForm}`);
     
@@ -343,4 +444,11 @@ function loadLocation(shortForm, fullName) {
         action: "getMembers",
         location: shortForm
     });
+}
+
+function updateHeaderText(text) {
+    const headerElement = document.getElementById('location-header');
+    if (headerElement) {
+        headerElement.textContent = text;
+    }
 }

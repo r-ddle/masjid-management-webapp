@@ -1143,11 +1143,6 @@ html {
     color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
   }
 
-  .\!label a:hover {
-    --tw-text-opacity: 1 !important;
-    color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity))) !important;
-  }
-
   .menu li > *:not(ul, .menu-title, details, .btn):active,
 .menu li > *:not(ul, .menu-title, details, .btn).active,
 .menu li > details > summary:active {
@@ -1205,12 +1200,6 @@ html {
   .table tr.hover:nth-child(even):hover {
     --tw-bg-opacity: 1;
     background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
-  }
-
-  .\!table tr.hover:hover,
-  .\!table tr.hover:nth-child(even):hover {
-    --tw-bg-opacity: 1 !important;
-    background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity))) !important;
   }
 
   .table-zebra tr.hover:hover,
@@ -2264,19 +2253,6 @@ html {
   padding-bottom: 0.5rem;
 }
 
-.\!label {
-  display: flex !important;
-  -webkit-user-select: none !important;
-     -moz-user-select: none !important;
-          user-select: none !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding-left: 0.25rem !important;
-  padding-right: 0.25rem !important;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
 .hero {
   display: grid;
   width: 100%;
@@ -2473,11 +2449,6 @@ html {
 .link {
   cursor: pointer;
   text-decoration-line: underline;
-}
-
-.\!link {
-  cursor: pointer !important;
-  text-decoration-line: underline !important;
 }
 
 .link-hover {
@@ -3098,17 +3069,6 @@ html {
   min-width: 4rem;
 }
 
-.steps .\!step {
-  display: grid !important;
-  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-  grid-template-columns: auto !important;
-  grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
-  grid-template-rows: 40px 1fr !important;
-  place-items: center !important;
-  text-align: center !important;
-  min-width: 4rem !important;
-}
-
 .swap {
   position: relative;
   display: inline-grid;
@@ -3236,29 +3196,12 @@ input.tab:checked + .tab-content,
   line-height: 1.25rem;
 }
 
-.\!table {
-  position: relative !important;
-  width: 100% !important;
-  border-radius: var(--rounded-box, 1rem) !important;
-  text-align: left !important;
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
-}
-
 .table :where(.table-pin-rows thead tr) {
   position: sticky;
   top: 0px;
   z-index: 1;
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-}
-
-.\!table :where(.table-pin-rows thead tr) {
-  position: sticky !important;
-  top: 0px !important;
-  z-index: 1 !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity))) !important;
 }
 
 .table :where(.table-pin-rows tfoot tr) {
@@ -3269,28 +3212,12 @@ input.tab:checked + .tab-content,
   background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
 }
 
-.\!table :where(.table-pin-rows tfoot tr) {
-  position: sticky !important;
-  bottom: 0px !important;
-  z-index: 1 !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity))) !important;
-}
-
 .table :where(.table-pin-cols tr th) {
   position: sticky;
   left: 0px;
   right: 0px;
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-}
-
-.\!table :where(.table-pin-cols tr th) {
-  position: sticky !important;
-  left: 0px !important;
-  right: 0px !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity))) !important;
 }
 
 .table-zebra tbody tr:nth-child(even) :where(.table-pin-cols tr th) {
@@ -3604,11 +3531,6 @@ input.tab:checked + .tab-content,
 .btm-nav > * .label {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-
-.btm-nav > * .\!label {
-  font-size: 1rem !important;
-  line-height: 1.5rem !important;
 }
 
 .breadcrumbs > ul > li > a:focus, .breadcrumbs > ol > li > a:focus {
@@ -5019,19 +4941,9 @@ details.collapse summary::-webkit-details-marker {
   outline-offset: 2px;
 }
 
-.\!link:focus {
-  outline: 2px solid transparent !important;
-  outline-offset: 2px !important;
-}
-
 .link:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
-}
-
-.\!link:focus-visible {
-  outline: 2px solid currentColor !important;
-  outline-offset: 2px !important;
 }
 
 .loading {
@@ -6289,21 +6201,6 @@ details.collapse summary::-webkit-details-marker {
   margin-inline-start: -100%;
 }
 
-.steps .\!step:before {
-  top: 0px !important;
-  grid-column-start: 1 !important;
-  grid-row-start: 1 !important;
-  height: 0.5rem !important;
-  width: 100% !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity))) !important;
-  --tw-text-opacity: 1 !important;
-  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity))) !important;
-  content: "" !important;
-  margin-inline-start: -100% !important;
-}
-
 .steps .step:after {
   content: counter(step);
   counter-increment: step;
@@ -6323,39 +6220,12 @@ details.collapse summary::-webkit-details-marker {
   color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
 }
 
-.steps .\!step:after {
-  content: counter(step) !important;
-  counter-increment: step !important;
-  z-index: 1 !important;
-  position: relative !important;
-  grid-column-start: 1 !important;
-  grid-row-start: 1 !important;
-  display: grid !important;
-  height: 2rem !important;
-  width: 2rem !important;
-  place-items: center !important;
-  place-self: center !important;
-  border-radius: 9999px !important;
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity))) !important;
-  --tw-text-opacity: 1 !important;
-  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity))) !important;
-}
-
 .steps .step:first-child:before {
   content: none;
 }
 
-.steps .\!step:first-child:before {
-  content: none !important;
-}
-
 .steps .step[data-content]:after {
   content: attr(data-content);
-}
-
-.steps .\!step[data-content]:after {
-  content: attr(data-content) !important;
 }
 
 .steps .step-neutral + .step-neutral:before,
@@ -6624,10 +6494,6 @@ details.collapse summary::-webkit-details-marker {
   text-align: right;
 }
 
-.\!table:where([dir="rtl"], [dir="rtl"] *) {
-  text-align: right !important;
-}
-
 .table :where(th, td) {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -6636,25 +6502,11 @@ details.collapse summary::-webkit-details-marker {
   vertical-align: middle;
 }
 
-.\!table :where(th, td) {
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
-  padding-top: 0.75rem !important;
-  padding-bottom: 0.75rem !important;
-  vertical-align: middle !important;
-}
-
 .table tr.active,
   .table tr.active:nth-child(even),
   .table-zebra tbody tr:nth-child(even) {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
-}
-
-.\!table tr.active,
-  .\!table tr.active:nth-child(even) {
-  --tw-bg-opacity: 1 !important;
-  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity))) !important;
 }
 
 .table-zebra tr.active,
@@ -6670,12 +6522,6 @@ details.collapse summary::-webkit-details-marker {
   border-bottom-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
 }
 
-.\!table :where(thead tr, tbody tr:not(:last-child), tbody tr:first-child:last-child) {
-  border-bottom-width: 1px !important;
-  --tw-border-opacity: 1 !important;
-  border-bottom-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity))) !important;
-}
-
 .table :where(thead, tfoot) {
   white-space: nowrap;
   font-size: 0.75rem;
@@ -6684,24 +6530,10 @@ details.collapse summary::-webkit-details-marker {
   color: var(--fallback-bc,oklch(var(--bc)/0.6));
 }
 
-.\!table :where(thead, tfoot) {
-  white-space: nowrap !important;
-  font-size: 0.75rem !important;
-  line-height: 1rem !important;
-  font-weight: 700 !important;
-  color: var(--fallback-bc,oklch(var(--bc)/0.6)) !important;
-}
-
 .table :where(tfoot) {
   border-top-width: 1px;
   --tw-border-opacity: 1;
   border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
-}
-
-.\!table :where(tfoot) {
-  border-top-width: 1px !important;
-  --tw-border-opacity: 1 !important;
-  border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity))) !important;
 }
 
 .textarea-bordered {
@@ -8036,14 +7868,6 @@ html:has(.drawer-open.drawer-open) {
   text-align: center;
 }
 
-.steps-horizontal .\!step {
-  display: grid !important;
-  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-  grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
-  place-items: center !important;
-  text-align: center !important;
-}
-
 .steps-vertical {
   grid-auto-rows: 1fr;
   grid-auto-flow: row;
@@ -8053,12 +7877,6 @@ html:has(.drawer-open.drawer-open) {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(1, minmax(0, 1fr));
-}
-
-.steps-vertical .\!step {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  grid-template-rows: repeat(1, minmax(0, 1fr)) !important;
 }
 
 .tabs-md :where(.tab) {
@@ -8647,12 +8465,6 @@ html:has(.drawer-open.drawer-open) {
   min-width: 4rem;
 }
 
-.steps-horizontal .\!step {
-  grid-template-rows: 40px 1fr !important;
-  grid-template-columns: auto !important;
-  min-width: 4rem !important;
-}
-
 .steps-horizontal .step:before {
   height: 0.5rem;
   width: 100%;
@@ -8663,24 +8475,9 @@ html:has(.drawer-open.drawer-open) {
   margin-inline-start: -100%;
 }
 
-.steps-horizontal .\!step:before {
-  height: 0.5rem !important;
-  width: 100% !important;
-  --tw-translate-x: 0px !important;
-  --tw-translate-y: 0px !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
-  content: "" !important;
-  margin-inline-start: -100% !important;
-}
-
 .steps-horizontal .step:where([dir="rtl"], [dir="rtl"] *):before {
   --tw-translate-x: 0px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.steps-horizontal .\!step:where([dir="rtl"], [dir="rtl"] *):before {
-  --tw-translate-x: 0px !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
 .steps-vertical .step {
@@ -8689,14 +8486,6 @@ html:has(.drawer-open.drawer-open) {
   grid-template-rows: auto;
   min-height: 4rem;
   justify-items: start;
-}
-
-.steps-vertical .\!step {
-  gap: 0.5rem !important;
-  grid-template-columns: 40px 1fr !important;
-  grid-template-rows: auto !important;
-  min-height: 4rem !important;
-  justify-items: start !important;
 }
 
 .steps-vertical .step:before {
@@ -8708,23 +8497,9 @@ html:has(.drawer-open.drawer-open) {
   margin-inline-start: 50%;
 }
 
-.steps-vertical .\!step:before {
-  height: 100% !important;
-  width: 0.5rem !important;
-  --tw-translate-x: -50% !important;
-  --tw-translate-y: -50% !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
-  margin-inline-start: 50% !important;
-}
-
 .steps-vertical .step:where([dir="rtl"], [dir="rtl"] *):before {
   --tw-translate-x: 50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.steps-vertical .\!step:where([dir="rtl"], [dir="rtl"] *):before {
-  --tw-translate-x: 50% !important;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
 }
 
 .table-xs :not(thead):not(tfoot) tr {
@@ -9165,10 +8940,6 @@ html:has(.drawer-open.drawer-open) {
   display: block;
 }
 
-.\!block {
-  display: block !important;
-}
-
 .inline-block {
   display: inline-block;
 }
@@ -9187,10 +8958,6 @@ html:has(.drawer-open.drawer-open) {
 
 .table {
   display: table;
-}
-
-.\!table {
-  display: table !important;
 }
 
 .inline-table {
@@ -9279,10 +9046,6 @@ html:has(.drawer-open.drawer-open) {
 
 .h-full {
   height: 100%;
-}
-
-.h-1 {
-  height: 0.25rem;
 }
 
 .w-4 {

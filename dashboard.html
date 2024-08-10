@@ -23,7 +23,7 @@
                     </div> 
                     <div class="flex-1 flex justify-center items-center">
                         <h2 id="location-header" class="text-2xl font-bold mr-4" data-short-form="">Select a Location</h2>
-                        <div class="dropdown dropdown-bottom">
+                        <div id="location-selector" class="dropdown dropdown-bottom">
                             <div tabindex="0" role="button" class="btn bg-primary m-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="mr-2"><path d="M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z"></path></svg>
                                 Select Location
@@ -96,8 +96,9 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Page content -->
-                <div class="p-4 rounded-full">
+                <div id="janaza-content" class="p-4 rounded-full">
                     <div class="overflow-x-auto">
                         <table class="table w-full">
                             <thead>
@@ -114,8 +115,27 @@
                         </table>
                     </div>
                 </div>
+
+                <div id="mahallah-content" style="display: none;">
+                    <div class="p-4 rounded-full">
+                        <div class="overflow-x-auto">
+                            <table class="table w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Zone</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Number</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mahallah-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div> 
-            <!-- Side Panel -->
             <div class="drawer-side">
                 <label for="my-drawer" class="drawer-overlay"></label>
                 <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
@@ -127,12 +147,11 @@
                     </li>
                     
                     <li>
-                        <details>
-                            <summary><a class="active">Janaza Member Details</a></summary>
-                            <ul>
-                                <li><a>Scheme</a></li>
-                            </ul>
-                        </details>
+                        <a id="janaza-details" class="active">Janaza Member Details</a>
+                    </li>
+                    
+                    <li>
+                        <a id="mahallah-details">Mahallah Member Details</a>
                     </li>
                 </ul>
             </div>
