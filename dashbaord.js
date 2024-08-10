@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadLocation(location) {
     console.log(`Loading location: ${location}`);
     fetchMembersAndPopulateTable(location);
+    
 }
 
 
@@ -359,7 +360,10 @@ function handleMemberUpdateResult(success, memberId) {
         nameElement.textContent = nameInput.value;
         telephoneElement.textContent = telephoneInput.value;
         addressElement.textContent = addressInput.value;
-
+        Swal.fire({
+            title: "Sweet!",
+            text: "Member Details Have Been Updated!",
+            icon:'success'});
         exitEditMode(memberId);
     } else {
         // Update failed... fuck.
@@ -454,14 +458,18 @@ function handleAddMemberResult(success) {
 
 // get out of here {user}!
 function deleteMember(memberId) {
-    if (confirm("Are you sure you want to delete this member?")) {
+    Swal.fire({
+        title: "Deleted",
+        text: "Your Member has been deleted.",
+        icon: "warning"
+      })
         const location = document.getElementById('location-header').dataset.shortForm;
         chrome.webview.postMessage({
             action: "deleteMember",
             Id: memberId,
             location: location
         });
-    }
+    
 }
 
 // trash (sakura) taken out
@@ -469,9 +477,16 @@ function handleDeleteMemberResult(success, memberId) {
     if (success) {
         // Remove the row from the table
         document.getElementById(`row-${memberId}`).remove();
-        alert('Member deleted successfully!');
     } else {
-        alert('Failed to delete member. Please try again.');
+        Swal.fire({
+            position: "center",
+            height: 10,
+            width: 400,
+            icon:'Erorr',
+            title: "Member has been successfully added!",
+            showConfirmButton: false,
+            timer: 1500
+          });
     }
 }
 
@@ -495,3 +510,23 @@ function updateHeaderText(text) {
         headerElement.textContent = text;
     }
 }
+
+
+
+/*function addAdmin() {
+    const username = document.getElementById('new-member-name').value;
+    var   password = document.querySelector('input[name="password"]').value;
+    const location = document.getElementById('location-header').dataset.shortForm;
+
+    if (username && password && location) {
+        chrome.webview.postMessage({
+            action: "addMember",
+            username: username,
+            password: password,
+            location: location
+        });
+        cancelAddMember(); // This will hide the row and clear the fields
+    } else {
+        alert("Please fill in all fields and ensure a location is selected.");
+    }
+}*/
