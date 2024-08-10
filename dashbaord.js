@@ -47,6 +47,49 @@ function loadLocation(location) {
     fetchMembersAndPopulateTable(location);
 }
 
+
+
+/*g0j0's Code Dont TOuch I mean it!!
+function loadZone(Zone) {
+    console.log(`Loading location: ${Zone}`);
+    fetchMembersAndPopulateTable(Zone);
+}
+
+function fetchMembersAndPopulateTable(Zone) {
+    try {
+        console.log(`Fetching members for location: ${Zone}`);
+        chrome.webview.postMessage({ action: "getMembers", Zone: Zone });
+    } catch (error) {
+        console.error("Error fetching members:", error);
+    }
+}
+
+
+function handleMembers(Zone, membersJson) {
+    console.log(`Received ${Zone} members data:`, membersJson);
+    populateTable(membersJson);
+}
+
+
+
+chrome.webview.addEventListener('message', (event) => {
+    console.log("Received message from WebView:", event);
+    const { action, data } = event;
+    if (action === "getMembers") {
+        const Zone = data.location;
+        handleMembers(Zone, data.members);
+    }
+});*/
+
+
+
+
+
+
+
+
+
+
 function loadMahallaMembers() {
     chrome.webview.postMessage({ action: "getMahallaMembers" });
 }

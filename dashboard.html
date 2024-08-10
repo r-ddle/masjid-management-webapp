@@ -57,15 +57,38 @@
                                 <li onclick="loadLocation('Siddam', 'Siddamulla')"><a>Siddamulla</a></li>
                                 <li onclick="loadLocation('Wasana', 'Wasanawatte')"><a>Wasanawatte</a></li>
                             </ul>
+                            
+                        </div>
+                        <div id="zone-selector" class="dropdown dropdown-bottom">
+                            <div tabindex="1" role="button" class="btn bg-primary m-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="mr-2"><path d="M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z"></path></svg>
+                                Zones
+                            </div>
+                            <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                                <li onclick="loadLocation('2C', 'Zone 2C Janaza')"><a>2C Zone</a></li>
+                                <li onclick="loadLocation('3C', 'Zone 3C Janaza')"><a>3C Zone</a></li>
+                                <li onclick="loadLocation('4B', 'Zone 4B Janaza')"><a>4B Zone</a></li>
+                                <li onclick="loadLocation('5B', 'Zone 5B Janaza')"><a>5B Zone</a></li>
+                                <li onclick="loadLocation('6B', 'Zone 6B Janaza')"><a>6B Zone</a></li>
+                                <li onclick="loadLocation('7B', 'Zone 7B Janaza')"><a>7B Zone</a></li>
+                                <li onclick="loadLocation('8B', 'Zone 8B Janaza')"><a>8B Zone</a></li>
+                                <li onclick="loadLocation('9B', 'Zone 9B Janaza')"><a>9B Zone</a></li>
+                                <li onclick="loadLocation('10B', 'Zone 10B Janaza')"><a>10B Zone</a></li>
+                                <li onclick="loadLocation('Others', 'Others')"><a></a></li>                    
+                            </ul>
                         </div>
                     </div>
                     <!-- add member button -->
                     <div class="flex-none">
-                        <button onclick="showAddMemberRow()" class="btn btn-primary">
+                        <button onclick="showAddMemberRow()" class="btn btn-primary mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                             </svg>
                             Add Member
+                        </button>
+                        <button onclick="showAddMemberRow()" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M248,80a28,28,0,1,0-51.12,15.77l-26.79,33L146,73.4a28,28,0,1,0-36.06,0L85.91,128.74l-26.79-33a28,28,0,1,0-26.6,12L47,194.63A16,16,0,0,0,62.78,208H193.22A16,16,0,0,0,209,194.63l14.47-86.85A28,28,0,0,0,248,80ZM128,40a12,12,0,1,1-12,12A12,12,0,0,1,128,40ZM24,80A12,12,0,1,1,36,92,12,12,0,0,1,24,80ZM193.22,192H62.78L48.86,108.52,81.79,149A8,8,0,0,0,88,152a7.83,7.83,0,0,0,1.08-.07,8,8,0,0,0,6.26-4.74l29.3-67.4a27,27,0,0,0,6.72,0l29.3,67.4a8,8,0,0,0,6.26,4.74A7.83,7.83,0,0,0,168,152a8,8,0,0,0,6.21-3l32.93-40.52ZM220,92a12,12,0,1,1,12-12A12,12,0,0,1,220,92Z"></path></svg>
+                            Add Admin
                         </button>
                     </div>
                 </div>
