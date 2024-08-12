@@ -49,7 +49,6 @@ function loadLocation(location) {
 }
 
 
-
 /*g0j0's Code Dont TOuch I mean it!!
 function loadZone(Zone) {
     console.log(`Loading location: ${Zone}`);
@@ -81,13 +80,6 @@ chrome.webview.addEventListener('message', (event) => {
         handleMembers(Zone, data.members);
     }
 });*/
-
-
-
-
-
-
-
 
 
 
@@ -449,7 +441,6 @@ function handleAddAdminResult(successAdmin) {
     }
 }
 
-
 function handleAddMemberResult(success) {
     if (success) {
         Swal.fire({
@@ -468,16 +459,6 @@ function handleAddMemberResult(success) {
         alert('Failed to add member. Please try again.');
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 // not welcome {user}!   BOOOOOOOOOOOOOOOOOOM!!!
 function cancelAddMember() {
