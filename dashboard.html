@@ -86,7 +86,7 @@
                             </svg>
                             Add Member
                         </button>
-                        <button onclick="showAddMemberRow()" class="btn btn-primary">
+                        <button onclick="showAddAdminRow()" class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256"><path d="M248,80a28,28,0,1,0-51.12,15.77l-26.79,33L146,73.4a28,28,0,1,0-36.06,0L85.91,128.74l-26.79-33a28,28,0,1,0-26.6,12L47,194.63A16,16,0,0,0,62.78,208H193.22A16,16,0,0,0,209,194.63l14.47-86.85A28,28,0,0,0,248,80ZM128,40a12,12,0,1,1-12,12A12,12,0,0,1,128,40ZM24,80A12,12,0,1,1,36,92,12,12,0,0,1,24,80ZM193.22,192H62.78L48.86,108.52,81.79,149A8,8,0,0,0,88,152a7.83,7.83,0,0,0,1.08-.07,8,8,0,0,0,6.26-4.74l29.3-67.4a27,27,0,0,0,6.72,0l29.3,67.4a8,8,0,0,0,6.26,4.74A7.83,7.83,0,0,0,168,152a8,8,0,0,0,6.21-3l32.93-40.52ZM220,92a12,12,0,1,1,12-12A12,12,0,0,1,220,92Z"></path></svg>
                             Add Admin
                         </button>
@@ -115,6 +115,34 @@
                         </div>
                         <div class="flex items-end space-x-2">
                             <button onclick="addNewMember()" class="btn btn-primary">Add</button>
+                            <button onclick="cancelAddMember()" class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Add Admin Account-->
+                <div id="add-admin-row" class="hidden mb-4 p-4 bg-base-200 rounded-lg shadow">
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" id="new-admin-name" placeholder="Enter name" class="input input-bordered w-full" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Password</span>
+                            </label>
+                            <input type="text" id="new-admin-password" placeholder="Create a Password" class="input input-bordered w-full" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" id="new-admin-address" placeholder="Enter address" class="input input-bordered w-full" />
+                        </div>
+                        <div class="flex items-end space-x-2">
+                            <button onclick="addNewAdmin()" class="btn btn-primary">Add</button>
                             <button onclick="cancelAddMember()" class="btn">Cancel</button>
                         </div>
                     </div>

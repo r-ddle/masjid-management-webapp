@@ -406,6 +406,79 @@ function showAddMemberRow() {
     document.getElementById('add-member-row').classList.remove('hidden');
 }
 
+//add code commeted to learn 
+//step 1
+function showAddAdminRow() {
+    document.getElementById('add-admin-row').classList.remove('hidden');
+}
+
+//step 2
+function addNewAdmin() {
+    const username = document.getElementById('new-admin-name').value;
+    const address = document.getElementById('new-admin-address').value;
+    const password = document.getElementById('new-admin-password').value;
+
+    if (username && address && password) {
+        chrome.webview.postMessage({
+            action: "addAdmin",
+            username: username,
+            address: address,
+            password: password
+        });
+        cancelAddMember(); // This will hide the row and clear the fields
+    } else {
+        alert("Please fill in all fields and ensure a location is selected.");
+    }
+}
+
+function handleAddAdminResult(successAdmin) {
+    if (successAdmin) {
+        Swal.fire({
+            position: "center",
+            height: 10,
+            width: 400,
+            icon:'success',
+            title: "Administrator has been successfully added!",
+            showConfirmButton: false,
+            timer: 1500});
+        // Refresh the member list else how you gonna see the updates u stupid or smth
+        const location = document.getElementById('location-header').dataset.shortForm;
+        loadLocation(location, document.getElementById('location-header').textContent);
+    } else {
+        alert('Failed to add AdministratorPlease try again.');
+    }
+}
+
+
+function handleAddMemberResult(success) {
+    if (success) {
+        Swal.fire({
+            position: "center",
+            height: 10,
+            width: 400,
+            icon:'success',
+            title: "Member has been successfully added!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        // Refresh the member list else how you gonna see the updates u stupid or smth
+        const location = document.getElementById('location-header').dataset.shortForm;
+        loadLocation(location, document.getElementById('location-header').textContent);
+    } else {
+        alert('Failed to add member. Please try again.');
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 // not welcome {user}!   BOOOOOOOOOOOOOOOOOOM!!!
 function cancelAddMember() {
     document.getElementById('add-member-row').classList.add('hidden');
