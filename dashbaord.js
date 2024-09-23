@@ -4,10 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const mahallaDetails = document.getElementById('mahallah-details');
     const janazaContent = document.getElementById('janaza-content');
     const mahallaContent = document.getElementById('mahallah-content');
+    const hiflContent = document.getElementById('hifl-content');
+    const hiflDetails = document.getElementById('hifl-details');
     const locationSelector = document.getElementById('location-selector');
 
     janazaContent.style.display = 'block';
     mahallaContent.style.display = 'none';
+    hiflContent.style.display = 'none';
+    hiflContent.style.display = 'none';
     locationSelector.style.display = 'block';
     updateHeaderText('Select a Location');
 
@@ -26,9 +30,34 @@ document.addEventListener('DOMContentLoaded', function() {
         locationSelector.style.display = 'none';
         mahallaDetails.classList.add('active');
         janazaDetails.classList.remove('active');
+        hiflDetails.classList.remove('active');
         updateHeaderText('Mahallah Member Details');
         loadMahallaMembers();
     });
+
+
+    
+    hiflDetails.addEventListener('click', function() {
+        janazaContent.style.display = 'none';
+        mahallaContent.style.display = 'block';
+        hiflContent.style.display = 'block';
+        locationSelector.style.display = 'none';
+        hiflDetails.classList.add('active');
+        janazaDetails.classList.remove('active');
+        mahallaDetails.classList.remove('active');
+        updateHeaderText('Hifl Madarasa');
+       
+    });
+
+
+    hiflContent.style.display = 'block';
+    mahallaContent.style.display = 'none';
+    hiflContent.style.display = 'none';
+    hiflContent.style.display = 'none';
+    locationSelector.style.display = 'block';
+    updateHeaderText('Hifl Madarsa ');
+
+
 });
 
 // Let Content Load and check if webview works if not then we screwed fr
@@ -417,7 +446,7 @@ function addNewAdmin() {
             address: address,
             password: password
         });
-        cancelAddMember(); // This will hide the row and clear the fields
+        cancelAddAdminMember(); // This will hide the row and clear the fields
     } else {
         alert("Please fill in all fields and ensure a location is selected.");
     }
@@ -565,22 +594,10 @@ function updateHeaderText(text) {
     }
 }
 
-
-
-/*function addAdmin() {
-    const username = document.getElementById('new-member-name').value;
-    var   password = document.querySelector('input[name="password"]').value;
-    const location = document.getElementById('location-header').dataset.shortForm;
-
-    if (username && password && location) {
-        chrome.webview.postMessage({
-            action: "addMember",
-            username: username,
-            password: password,
-            location: location
-        });
-        cancelAddMember(); // This will hide the row and clear the fields
-    } else {
-        alert("Please fill in all fields and ensure a location is selected.");
-    }
-}*/
+function cancelAddAdminMember() {
+    document.getElementById('add-admin-row').classList.add('hidden');
+    // Clear the input fields 
+    document.getElementById('new-admin-name').value = '';
+    document.getElementById('new-admin-password').value = '';
+    document.getElementById('new-admin-address').value = '';
+}
