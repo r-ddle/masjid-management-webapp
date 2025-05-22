@@ -1,4 +1,2 @@
-
-*.vsidx
-/app/packages
-/app/bin/Debug
+.env
+node_modules/
