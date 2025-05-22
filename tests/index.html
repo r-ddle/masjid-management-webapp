@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masjid Management</title>
+  <!-- Tailwind CSS and DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease-in-out;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+    @media (min-width: 769px) {
+      .sidebar {
+        width: 250px;
+      }
+      .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full bg-gray-200 border-r border-gray-300 z-30">
+      <div class="p-4 border-b border-gray-300">
+        <h1 class="text-xl font-semibold flex items-center">
+          <i data-feather="home" class="mr-2 h-5 w-5"></i> Masjid Management
+        </h1>
+      </div>
+      <ul class="menu p-4 space-y-2">
+        <li>
+          <a href="#" class="active bg-emerald-100 text-emerald-800 hover:bg-emerald-200 rounded-md flex items-center">
+            <i data-feather="users" class="h-5 w-5 mr-2"></i> Janaza Member Details
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center">
+            <i data-feather="users" class="h-5 w-5 mr-2"></i> Mahallah Member Details
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center">
+            <i data-feather="book" class="h-5 w-5 mr-2"></i> Hifl Madrasa Details
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content flex flex-col h-screen overflow-hidden">
+      <!-- Mobile Header with Sidebar Toggle -->
+      <div class="md:hidden bg-white p-4 border-b border-gray-300 flex items-center">
+        <button id="sidebar-toggle" class="btn btn-ghost btn-sm mr-2">
+          <i data-feather="menu" class="h-5 w-5"></i>
+        </button>
+        <h1 class="text-xl font-semibold">Masjid Management</h1>
+      </div>
+
+      <!-- Header -->
+      <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <h2 id="location-title" class="text-xl font-semibold">Select a Location</h2>
+        <div class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+          <div class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+            <select id="location-select" class="select select-bordered bg-emerald-100 text-emerald-800 border-emerald-200 w-full md:w-48">
+              <option value="" disabled selected>Select Location</option>
+              <option value="Colombo">Colombo</option>
+              <option value="Kandy">Kandy</option>
+              <option value="Galle">Galle</option>
+              <option value="Jaffna">Jaffna</option>
+              <option value="Batticaloa">Batticaloa</option>
+            </select>
+            
+            <select id="zone-select" class="select select-bordered bg-emerald-100 text-emerald-800 border-emerald-200 w-full md:w-48 hidden">
+              <option value="" disabled selected>Zones</option>
+              <option value="Zone 1">Zone 1</option>
+              <option value="Zone 2">Zone 2</option>
+              <option value="Zone 3">Zone 3</option>
+              <option value="Zone 4">Zone 4</option>
+            </select>
+          </div>
+          <div class="flex gap-2 w-full md:w-auto">
+            <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white w-full md:w-auto" onclick="document.getElementById('add-member-modal').showModal()">
+              <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Member
+            </button>
+            <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white w-full md:w-auto" onclick="document.getElementById('add-admin-modal').showModal()">
+              <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Admin
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Table -->
+      <main class="flex-1 overflow-auto p-4">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="table w-full">
+              <thead>
+                <tr>
+                  <th class="bg-gray-50">Name</th>
+                  <th class="bg-gray-50">Phone Number</th>
+                  <th class="bg-gray-50">Address</th>
+                  <th class="bg-gray-50">Payment Status</th>
+                  <th class="bg-gray-50">Action</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <tr>
+                  <td colspan="5" class="text-center py-16 text-gray-500">
+                    Please Select a Location to Display Data
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <dialog id="add-member-modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Add New Member</h3>
+      <form id="add-member-form" class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Name</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Phone Number</span>
+          </label>
+          <input type="tel" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Address</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" onclick="document.getElementById('add-member-modal').close()">Cancel</button>
+          <button type="submit" class="btn bg-emerald-500 hover:bg-emerald-600 text-white">Add Member</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Admin Modal -->
+  <dialog id="add-admin-modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Add New Admin</h3>
+      <form id="add-admin-form" class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Name</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Password</span>
+          </label>
+          <input type="password" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Address</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" onclick="document.getElementById('add-admin-modal').close()">Cancel</button>
+          <button type="submit" class="btn bg-emerald-500 hover:bg-emerald-600 text-white">Add Admin</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- JavaScript -->
+  <script>
+    // Initialize Feather Icons
+    feather.replace();
+
+    // Sidebar Toggle for Mobile
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Location Select
+    document.getElementById('location-select').addEventListener('change', function() {
+      const locationValue = this.value;
+      const zoneSelect = document.getElementById('zone-select');
+      const locationTitle = document.getElementById('location-title');
+      
+      if (locationValue) {
+        zoneSelect.classList.remove('hidden');
+        locationTitle.textContent = locationValue;
+        
+        // This would be replaced with actual data fetching in a real implementation
+        // For now, just show empty table with columns
+        document.getElementById('table-body').innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-8 text-gray-500">
+              No data available for ${locationValue}. Select a zone or add members.
+            </td>
+          </tr>
+        `;
+      } else {
+        zoneSelect.classList.add('hidden');
+        zoneSelect.value = "";
+        locationTitle.textContent = "Select a Location";
+        
+        // Reset table to initial state
+        document.getElementById('table-body').innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-16 text-gray-500">
+              Please Select a Location to Display Data
+            </td>
+          </tr>
+        `;
+      }
+    });
+
+    // Zone Select
+    document.getElementById('zone-select').addEventListener('change', function() {
+      const zoneValue = this.value;
+      const locationValue = document.getElementById('location-select').value;
+      const locationTitle = document.getElementById('location-title');
+      
+      if (zoneValue) {
+        locationTitle.textContent = `${locationValue} - ${zoneValue}`;
+        
+        // This would be replaced with actual data fetching in a real implementation
+        // For now, just show empty table with columns
+        document.getElementById('table-body').innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center py-8 text-gray-500">
+              No data available for ${locationValue} - ${zoneValue}. Add members to see data.
+            </td>
+          </tr>
+        `;
+      } else {
+        locationTitle.textContent = locationValue;
+      }
+    });
+
+    // Form Submissions (prevent default and close modal)
+    document.getElementById('add-member-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // In a real implementation, this would save the data
+      document.getElementById('add-member-modal').close();
+    });
+
+    document.getElementById('add-admin-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // In a real implementation, this would save the data
+      document.getElementById('add-admin-modal').close();
+    });
+
+    // Navigation Items
+    document.querySelectorAll('.menu a').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Remove active class from all items
+        document.querySelectorAll('.menu a').forEach(i => {
+          i.classList.remove('active', 'bg-emerald-100', 'text-emerald-800');
+          i.classList.add('hover:bg-gray-300');
+        });
+        
+        // Add active class to clicked item
+        this.classList.add('active', 'bg-emerald-100', 'text-emerald-800');
+        this.classList.remove('hover:bg-gray-300');
+        
+        // On mobile, close the sidebar after selection
+        if (window.innerWidth < 768) {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
