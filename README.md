@@ -238,10 +238,26 @@ The database seeding script (`npm run db:seed`) creates the following test users
 *   **Mahallah Member Location Filtering (Backend):** The `mahallah_members` table does not have a dedicated `location` column (it uses `zone`). The API (`GET /api/dashboard/mahallah-members?location=...`) attempts to match the `location` parameter against the `zone` field if a specific `zone` filter is not also provided. True multi-zone location filtering would require a backend location-to-zone mapping.
 
 ## Linting and Formatting
-... (Content remains the same) ...
+
+This project uses ESLint for linting and Prettier for code formatting.
+
+*   **Check for linting issues:**
+    ```bash
+    npm run lint
+    ```
+*   **Fix linting issues automatically:**
+    ```bash
+    npm run lint:fix
+    ```
+*   **Format code with Prettier:**
+    ```bash
+    npm run format
+    ```
 
 ## Contributing
-... (Content remains the same) ...
+
+Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure your code adheres to the linting and formatting standards.
 
 ## License
-... (Content remains the same) ...
+
+This project is licensed under the MIT License.
