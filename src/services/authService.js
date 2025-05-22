@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { comparePassword } = require('../utils/passwordUtils');
+const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 const CustomError = require('../utils/CustomError');
 
 /**
@@ -32,4 +32,30 @@ const authenticateUser = async (username, password) => {
 
 module.exports = {
   authenticateUser,
+  async registerAdmin(adminData) {
+    const { username, password, address } = adminData;
+
+    // Check if user already exists
+    const existingUser = await User.findUserByUsername(username);
+    if (existingUser) {
+      throw new CustomError('Username already exists', 409); // 409 Conflict
+    }
+
+    // Hash password
+    const passwordHash = await hashPassword(password);
+
+    // Create admin user
+    // The User.create model function was updated to accept address and isAdmin flag
+    try {
+      const newUser = await User.create(username, passwordHash, address, true); // true for isAdmin
+      // Exclude password_hash from the returned user object
+      const { password_hash, ...userWithoutPassword } = newUser;
+      return userWithoutPassword;
+    } catch (error) {
+      // Log the detailed error for server-side inspection
+      console.error('Error during admin registration in service:', error);
+      // Throw a more generic error or a specific one based on the type of error
+      throw new CustomError('Failed to register admin user.', 500);
+    }
+  },
 };

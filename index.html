@@ -12,10 +12,7 @@
     <main class="card">
       <div class="card-body w-96 mx-auto flex input-error">
         <h2 class="card-title">Masjid Management</h2>
-        <form
-  id="loginForm"
-  onsubmit="event.preventDefault(); login(this.username.value, this.password.value);"
->
+        <form id="loginForm">
   <div class="form-control">
     <label class="label">
       <span class="label-text">Username</span>
@@ -48,17 +45,12 @@
   </div>
   <button
     type="submit"
-    onclick="handleLogin()"
     class="btn btn-primary mt-5 w-full hover:-translate-y-1"
   >
     Login
   </button>
 </form>
     </main>
-    <script>
-      window.chrome = window.chrome || {};
-      chrome.webview = chrome.webview || {};
-    </script>
     <script src="app.js"></script>
   </body>
 </html>

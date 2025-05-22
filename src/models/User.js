@@ -18,10 +18,10 @@ const findUserByUsername = async (username) => {
  * @param {string} passwordHash - The hashed password for the new user.
  * @returns {Promise<Object>} The newly created user object (id, username, created_at, updated_at), excluding the password_hash.
  */
-const createUser = async (username, passwordHash) => {
+const createUser = async (username, passwordHash, address = null, isAdmin = false) => {
   const { rows } = await db.query(
-    'INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING id, username, created_at, updated_at',
-    [username, passwordHash]
+    'INSERT INTO users (username, password_hash, address, is_admin) VALUES ($1, $2, $3, $4) RETURNING id, username, address, is_admin, created_at, updated_at',
+    [username, passwordHash, address, isAdmin]
   );
   return rows[0];
 };
