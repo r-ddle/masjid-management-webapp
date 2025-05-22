@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Masjid Management</title>
+  <link rel="stylesheet" href="/output.css" />
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease-in-out;
+      }
+      .sidebar.open {
+        width: 250px;
+      }
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+    @media (min-width: 769px) {
+      .sidebar {
+        width: 250px;
+      }
+      .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+      }
+    }
+    .card-stats {
+      transition: all 0.3s ease;
+    }
+    .card-stats:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full bg-gray-200 border-r border-gray-300 z-30">
+      <div class="p-4 border-b border-gray-300">
+        <h1 class="text-xl font-semibold flex items-center">
+          <i data-feather="settings" class="mr-2 h-5 w-5"></i> Admin Dashboard
+        </h1>
+      </div>
+      <ul class="menu p-4 space-y-2">
+        <li>
+          <a href="#" class="active bg-emerald-100 text-emerald-800 hover:bg-emerald-200 rounded-md flex items-center" data-section="dashboard">
+            <i data-feather="grid" class="h-5 w-5 mr-2"></i> Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center" data-section="locations">
+            <i data-feather="map-pin" class="h-5 w-5 mr-2"></i> Locations & Zones
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center" data-section="members">
+            <i data-feather="users" class="h-5 w-5 mr-2"></i> Member Management
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center" data-section="admins">
+            <i data-feather="user-check" class="h-5 w-5 mr-2"></i> Admin Management
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center" data-section="reports">
+            <i data-feather="bar-chart-2" class="h-5 w-5 mr-2"></i> Reports
+          </a>
+        </li>
+        <li>
+          <a href="#" class="hover:bg-gray-300 rounded-md flex items-center" data-section="settings">
+            <i data-feather="sliders" class="h-5 w-5 mr-2"></i> System Settings
+          </a>
+        </li>
+        <li class="mt-8">
+          <a href="#" id="logout-link-sidebar" class="hover:bg-red-100 hover:text-red-700 rounded-md flex items-center text-gray-600">
+            <i data-feather="log-out" class="h-5 w-5 mr-2"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content flex flex-col h-screen overflow-hidden">
+      <!-- Mobile Header with Sidebar Toggle -->
+      <div class="md:hidden bg-white p-4 border-b border-gray-300 flex items-center">
+        <button id="sidebar-toggle" class="btn btn-ghost btn-sm mr-2">
+          <i data-feather="menu" class="h-5 w-5"></i>
+        </button>
+        <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+      </div>
+
+      <!-- Header -->
+      <header class="bg-white shadow-sm p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <h2 id="section-title" class="text-xl font-semibold">Dashboard Overview</h2>
+        <div class="flex flex-wrap gap-2">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+              <div class="w-10 rounded-full bg-emerald-500 flex items-center justify-center">
+                <span class="text-white font-bold">A</span>
+              </div>
+            </div>
+            <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+              <li><a>Profile</a></li>
+              <li><a>Settings</a></li>
+              <li><a id="logout-link-dropdown">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <main class="flex-1 overflow-auto p-4">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="space-y-6">
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="card bg-white shadow-md card-stats">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-500 text-sm">Total Members</p>
+                    <h3 class="text-2xl font-bold">248</h3>
+                  </div>
+                  <div class="rounded-full bg-blue-100 p-3">
+                    <i data-feather="users" class="h-6 w-6 text-blue-500"></i>
+                  </div>
+                </div>
+                <div class="mt-4 text-sm text-green-500 flex items-center">
+                  <i data-feather="trending-up" class="h-4 w-4 mr-1"></i> 12% increase
+                </div>
+              </div>
+            </div>
+            
+            <div class="card bg-white shadow-md card-stats">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-500 text-sm">Locations</p>
+                    <h3 class="text-2xl font-bold">5</h3>
+                  </div>
+                  <div class="rounded-full bg-emerald-100 p-3">
+                    <i data-feather="map-pin" class="h-6 w-6 text-emerald-500"></i>
+                  </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-500 flex items-center">
+                  <i data-feather="plus" class="h-4 w-4 mr-1"></i> Add new location
+                </div>
+              </div>
+            </div>
+            
+            <div class="card bg-white shadow-md card-stats">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-500 text-sm">Payments</p>
+                    <h3 class="text-2xl font-bold">$1,248</h3>
+                  </div>
+                  <div class="rounded-full bg-purple-100 p-3">
+                    <i data-feather="credit-card" class="h-6 w-6 text-purple-500"></i>
+                  </div>
+                </div>
+                <div class="mt-4 text-sm text-green-500 flex items-center">
+                  <i data-feather="trending-up" class="h-4 w-4 mr-1"></i> 8% increase
+                </div>
+              </div>
+            </div>
+            
+            <div class="card bg-white shadow-md card-stats">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-gray-500 text-sm">Admins</p>
+                    <h3 class="text-2xl font-bold">12</h3>
+                  </div>
+                  <div class="rounded-full bg-amber-100 p-3">
+                    <i data-feather="user-check" class="h-6 w-6 text-amber-500"></i>
+                  </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-500 flex items-center">
+                  <i data-feather="plus" class="h-4 w-4 mr-1"></i> Manage admins
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Activity -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Recent Activity</h3>
+                <button class="btn btn-ghost btn-sm">View All</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Action</th>
+                      <th>User</th>
+                      <th>Location</th>
+                      <th>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Added new member</td>
+                      <td>Admin1</td>
+                      <td>Colombo</td>
+                      <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td>Updated zone details</td>
+                      <td>Admin2</td>
+                      <td>Kandy</td>
+                      <td>5 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td>Payment received</td>
+                      <td>System</td>
+                      <td>Galle</td>
+                      <td>Yesterday</td>
+                    </tr>
+                    <tr>
+                      <td>New admin added</td>
+                      <td>SuperAdmin</td>
+                      <td>All</td>
+                      <td>2 days ago</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Locations & Zones Section -->
+        <section id="locations-section" class="space-y-6 hidden">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <h3 class="text-lg font-semibold">Manage Locations & Zones</h3>
+            <div class="flex gap-2 mt-2 md:mt-0">
+              <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white" onclick="document.getElementById('add-location-modal').showModal()">
+                <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Location
+              </button>
+              <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white" onclick="document.getElementById('add-zone-modal').showModal()">
+                <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Zone
+              </button>
+            </div>
+          </div>
+          
+          <!-- Locations Table -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Locations</h4>
+              <div class="overflow-x-auto">
+                <table class="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Location Name</th>
+                      <th>Total Members</th>
+                      <th>Total Zones</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Colombo</td>
+                      <td>85</td>
+                      <td>4</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Colombo')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Colombo?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Kandy</td>
+                      <td>62</td>
+                      <td>3</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Kandy')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Kandy?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Galle</td>
+                      <td>45</td>
+                      <td>2</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Galle')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Galle?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Jaffna</td>
+                      <td>38</td>
+                      <td>2</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Jaffna')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Jaffna?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Batticaloa</td>
+                      <td>18</td>
+                      <td>1</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Batticaloa')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Batticaloa?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Zones Table -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Zones</h4>
+              <div class="overflow-x-auto">
+                <table class="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Zone Name</th>
+                      <th>Location</th>
+                      <th>Total Members</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Zone 1</td>
+                      <td>Colombo</td>
+                      <td>25</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Zone 1')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Zone 1?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Zone 2</td>
+                      <td>Colombo</td>
+                      <td>30</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Zone 2')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Zone 2?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Zone 1</td>
+                      <td>Kandy</td>
+                      <td>22</td>
+                      <td>
+                        <div class="flex gap-2">
+                          <button class="btn btn-ghost btn-xs" onclick="alert('Edit Zone 1')">
+                            <i data-feather="edit" class="h-4 w-4"></i>
+                          </button>
+                          <button class="btn btn-ghost btn-xs text-red-500" onclick="confirm('Are you sure you want to delete Zone 1?')">
+                            <i data-feather="trash-2" class="h-4 w-4"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Member Management Section -->
+        <section id="members-section" class="space-y-6 hidden">
+          <!-- Tabs for Member Types -->
+          <div role="tablist" class="tabs tabs-boxed bg-base-200 p-2 rounded-md mb-6" id="member-type-tabs">
+            <a role="tab" class="tab tab-active" data-member-type="janaza">Janaza Members</a>
+            <a role="tab" class="tab" data-member-type="mahallah">Mahallah Members</a>
+            <a role="tab" class="tab" data-member-type="hifl">Hifl Members</a>
+          </div>
+
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 mt-4"> <!-- Added mt-4 for spacing after tabs -->
+            <h3 class="text-lg font-semibold" id="member-management-title">Janaza Members</h3> <!-- Title will be updated by JS -->
+            <div class="flex flex-col sm:flex-row gap-2 mt-2 md:mt-0 w-full md:w-auto">
+              <div class="join w-full md:w-auto">
+                <input id="member-search-input" class="input input-bordered join-item" placeholder="Search members..." />
+                <button id="member-search-button" class="btn join-item bg-emerald-500 hover:bg-emerald-600 text-white">
+                  <i data-feather="search" class="h-4 w-4"></i>
+                </button>
+              </div>
+              <button id="add-member-button" class="btn bg-emerald-500 hover:bg-emerald-600 text-white" onclick="document.getElementById('add-member-modal').showModal()">
+                <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Member
+              </button>
+            </div>
+          </div>
+          
+          <!-- Filter Controls - These will be dynamically shown/hidden or populated by JS -->
+          <div class="flex flex-wrap gap-2 mb-4" id="member-filters-container">
+            <select id="filter-location" class="select select-bordered w-full md:w-auto">
+              <option value="" selected>All Locations</option>
+              <!-- Options populated by JS or hardcoded if static and few -->
+               <option value="AraliyaUyana">AraliyaUyana</option>
+               <option value="AsiriUyana">AsiriUyana</option>
+               <option value="Bandara">Bandaranayakapura</option>
+               <option value="Boga">Bogahawila</option>
+               <option value="Colombo">Colombo</option>
+               <option value="Kandy">Kandy</option>
+            </select>
+            
+            <select id="filter-zone" class="select select-bordered w-full md:w-auto" style="display: none;"> <!-- Initially hidden -->
+              <option value="" selected>All Zones</option>
+               <option value="2C">2C</option>
+               <option value="3C">3C</option>
+               <option value="4B">4B</option>
+               <option value="5B">5B</option>
+            </select>
+            
+            <select id="filter-janaza-payment-status" class="select select-bordered w-full md:w-auto" style="display: none;"> <!-- Initially hidden -->
+              <option value="" selected>All Payment Statuses</option>
+              <option value="Paid">Paid</option>
+              <option value="Not_Paid">Not Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Waived">Waived</option>
+            </select>
+
+            <select id="filter-hifl-status" class="select select-bordered w-full md:w-auto" style="display: none;"> <!-- Initially hidden -->
+              <option value="" selected>All Hifl Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Graduated">Graduated</option>
+              <option value="Dropped">Dropped</option>
+            </select>
+            <button id="clear-filters-button" class="btn btn-outline">Clear Filters</button>
+          </div>
+          
+          <!-- Members Table -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <div class="overflow-x-auto">
+                <table class="table w-full" id="members-table">
+                  <thead>
+                    <tr>
+                      <!-- Headers will be dynamically generated by JS -->
+                    </tr>
+                  </thead>
+                  <tbody id="members-table-body">
+                    <!-- Rows will be dynamically generated by JS -->
+                    <tr>
+                      <td colspan="8" class="text-center py-8 text-gray-500">Select a member type to view data.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Pagination -->
+              <div class="flex justify-between items-center mt-4" id="members-pagination-controls" style="display: none;">
+                <div class="text-sm text-gray-500" id="members-pagination-info">
+                  {/* Showing 1-0 of 0 members */}
+                </div>
+                <div class="join" id="members-pagination-buttons">
+                  {/* Pagination buttons will be added by JS */}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bulk Actions - Initially hidden, shown by JS when items are selected -->
+          <div class="card bg-white shadow-md mt-6" id="members-bulk-actions" style="display: none;">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Bulk Actions</h4>
+              <div class="flex flex-wrap gap-2">
+                <button class="btn btn-outline btn-sm">Export Selected</button>
+                <button class="btn btn-outline btn-sm">Mark as Paid (Janaza)</button>
+                <button class="btn btn-outline btn-sm text-red-500">Delete Selected</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Admin Management Section -->
+        <section id="admins-section" class="space-y-6 hidden">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <h3 class="text-lg font-semibold">Admin Management</h3>
+            <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white mt-2 md:mt-0" onclick="document.getElementById('add-admin-modal').showModal()">
+              <i data-feather="plus" class="h-4 w-4 mr-2"></i> Add Admin
+            </button>
+          </div>
+          
+          <!-- Admins Table -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <div class="overflow-x-auto">
+                <table class="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Role</th>
+                      <th>Location Access</th>
+                      <th>Last Login</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Admin User</td>
+                      <td>admin1</td>
+                      <td>Super Admin</td>
+                      <td>All Locations</td>
+                      <td>Today, 10:45 AM</td>
+                      <td>
+                        <div class="dropdown dropdown-end">
+                          <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                            <i data-feather="more-vertical" class="h-4 w-4"></i>
+                          </div>
+                          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a>Edit</a></li>
+                            <li><a>Reset Password</a></li>
+                            <li><a class="text-red-500">Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Colombo Admin</td>
+                      <td>colombo_admin</td>
+                      <td>Location Admin</td>
+                      <td>Colombo</td>
+                      <td>Yesterday, 3:20 PM</td>
+                      <td>
+                        <div class="dropdown dropdown-end">
+                          <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                            <i data-feather="more-vertical" class="h-4 w-4"></i>
+                          </div>
+                          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a>Edit</a></li>
+                            <li><a>Reset Password</a></li>
+                            <li><a class="text-red-500">Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Kandy Admin</td>
+                      <td>kandy_admin</td>
+                      <td>Location Admin</td>
+                      <td>Kandy</td>
+                      <td>May 21, 2023</td>
+                      <td>
+                        <div class="dropdown dropdown-end">
+                          <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                            <i data-feather="more-vertical" class="h-4 w-4"></i>
+                          </div>
+                          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a>Edit</a></li>
+                            <li><a>Reset Password</a></li>
+                            <li><a class="text-red-500">Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Admin Roles -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Admin Roles & Permissions</h4>
+              <div class="overflow-x-auto">
+                <table class="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Role</th>
+                      <th>Description</th>
+                      <th>Permissions</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Super Admin</td>
+                      <td>Full system access</td>
+                      <td>All permissions</td>
+                      <td>
+                        <button class="btn btn-ghost btn-xs">
+                          <i data-feather="edit" class="h-4 w-4"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Location Admin</td>
+                      <td>Manage specific location</td>
+                      <td>View/Edit members, View/Edit zones</td>
+                      <td>
+                        <button class="btn btn-ghost btn-xs">
+                          <i data-feather="edit" class="h-4 w-4"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Member Manager</td>
+                      <td>Manage members only</td>
+                      <td>View/Edit members</td>
+                      <td>
+                        <button class="btn btn-ghost btn-xs">
+                          <i data-feather="edit" class="h-4 w-4"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports-section" class="space-y-6 hidden">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <h3 class="text-lg font-semibold">Reports & Analytics</h3>
+            <div class="flex gap-2 mt-2 md:mt-0">
+              <select class="select select-bordered w-full md:w-48">
+                <option value="" disabled selected>Report Type</option>
+                <option value="members">Member Report</option>
+                <option value="payments">Payment Report</option>
+                <option value="activity">Activity Report</option>
+              </select>
+              <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white">
+                <i data-feather="download" class="h-4 w-4 mr-2"></i> Export
+              </button>
+            </div>
+          </div>
+          
+          <!-- Report Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="card bg-white shadow-md">
+              <div class="card-body">
+                <h4 class="font-medium mb-4">Member Distribution by Location</h4>
+                <div class="h-64 flex items-center justify-center bg-gray-100 rounded-md">
+                  <p class="text-gray-500">Chart Placeholder</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card bg-white shadow-md">
+              <div class="card-body">
+                <h4 class="font-medium mb-4">Payment Status Overview</h4>
+                <div class="h-64 flex items-center justify-center bg-gray-100 rounded-md">
+                  <p class="text-gray-500">Chart Placeholder</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Monthly Report -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Monthly Member Growth</h4>
+              <div class="h-64 flex items-center justify-center bg-gray-100 rounded-md">
+                <p class="text-gray-500">Chart Placeholder</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings-section" class="space-y-6 hidden">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+            <h3 class="text-lg font-semibold">System Settings</h3>
+            <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white mt-2 md:mt-0">
+              <i data-feather="save" class="h-4 w-4 mr-2"></i> Save Changes
+            </button>
+          </div>
+          
+          <!-- General Settings -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">General Settings</h4>
+              <div class="space-y-4">
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Masjid Name</span>
+                  </label>
+                  <input type="text" class="input input-bordered" value="Central Masjid" />
+                </div>
+                
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Contact Email</span>
+                  </label>
+                  <input type="email" class="input input-bordered" value="admin@masjid.org" />
+                </div>
+                
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Contact Phone</span>
+                  </label>
+                  <input type="tel" class="input input-bordered" value="+94 11 234 5678" />
+                </div>
+                
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">System Language</span>
+                  </label>
+                  <select class="select select-bordered">
+                    <option value="en">English</option>
+                    <option value="si">Sinhala</option>
+                    <option value="ta">Tamil</option>
+                    <option value="ar">Arabic</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Notification Settings -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Notification Settings</h4>
+              <div class="space-y-4">
+                <div class="form-control">
+                  <label class="label cursor-pointer">
+                    <span class="label-text">Email Notifications</span>
+                    <input type="checkbox" class="toggle toggle-success" checked />
+                  </label>
+                </div>
+                
+                <div class="form-control">
+                  <label class="label cursor-pointer">
+                    <span class="label-text">SMS Notifications</span>
+                    <input type="checkbox" class="toggle toggle-success" checked />
+                  </label>
+                </div>
+                
+                <div class="form-control">
+                  <label class="label cursor-pointer">
+                    <span class="label-text">Payment Reminders</span>
+                    <input type="checkbox" class="toggle toggle-success" checked />
+                  </label>
+                </div>
+                
+                <div class="form-control">
+                  <label class="label cursor-pointer">
+                    <span class="label-text">System Updates</span>
+                    <input type="checkbox" class="toggle toggle-success" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Backup & Restore -->
+          <div class="card bg-white shadow-md">
+            <div class="card-body">
+              <h4 class="font-medium mb-4">Backup & Restore</h4>
+              <div class="space-y-4">
+                <div class="flex flex-col md:flex-row gap-2">
+                  <button class="btn btn-outline">
+                    <i data-feather="download" class="h-4 w-4 mr-2"></i> Backup Database
+                  </button>
+                  <button class="btn btn-outline">
+                    <i data-feather="upload" class="h-4 w-4 mr-2"></i> Restore Database
+                  </button>
+                </div>
+                
+                <div class="form-control">
+                  <label class="label">
+                    <span class="label-text">Auto Backup Frequency</span>
+                  </label>
+                  <select class="select select-bordered">
+                    <option value="daily">Daily</option>
+                    <option value="weekly" selected>Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="never">Never</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Location Modal -->
+  <dialog id="add-location-modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Add New Location</h3>
+      <form id="add-location-form" class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Location Name</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Address</span>
+          </label>
+          <textarea class="textarea textarea-bordered" rows="3"></textarea>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Contact Person</span>
+          </label>
+          <input type="text" class="input input-bordered" />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Contact Number</span>
+          </label>
+          <input type="tel" class="input input-bordered" />
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" onclick="document.getElementById('add-location-modal').close()">Cancel</button>
+          <button type="submit" class="btn bg-emerald-500 hover:bg-emerald-600 text-white">Add Location</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Zone Modal -->
+  <dialog id="add-zone-modal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Add New Zone</h3>
+      <form id="add-zone-form" class="space-y-4">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Zone Name</span>
+          </label>
+          <input type="text" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Location</span>
+          </label>
+          <select class="select select-bordered" required>
+            <option value="" disabled selected>Select Location</option>
+            <option value="Colombo">Colombo</option>
+            <option value="Kandy">Kandy</option>
+            <option value="Galle">Galle</option>
+            <option value="Jaffna">Jaffna</option>
+            <option value="Batticaloa">Batticaloa</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Description</span>
+          </label>
+          <textarea class="textarea textarea-bordered" rows="3"></textarea>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Zone Leader</span>
+          </label>
+          <input type="text" class="input input-bordered" />
+        </div>
+        <div class="modal-action">
+          <button type="button" class="btn" onclick="document.getElementById('add-zone-modal').close()">Cancel</button>
+          <button type="submit" class="btn bg-emerald-500 hover:bg-emerald-600 text-white">Add Zone</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Member Modal -->
+  <dialog id="add-member-modal" class="modal">
+    <div class="modal-box w-11/12 max-w-2xl"> <!-- Increased width -->
+      <form method="dialog">
+        <button id="add-member-modal-close-button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-4">Add New Member</h3>
+      <form id="add-member-form" class="space-y-4">
+        <!-- Member Type Selector -->
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Member Type</span>
+          </label>
+          <select id="add-member-type-select" class="select select-bordered" required>
+            <option value="janaza" selected>Janaza Member</option>
+            <option value="mahallah">Mahallah Member</option>
+            <option value="hifl">Hifl Member</option>
+          </select>
+        </div>
+
+        <!-- Common Fields -->
+        <div class="form-control">
+          <label class="label"><span class="label-text">Name</span></label>
+          <input type="text" id="add-member-name" name="name" placeholder="Full Name" class="input input-bordered" required />
+        </div>
+        <div class="form-control">
+          <label class="label"><span class="label-text">Telephone</span></label>
+          <input type="tel" id="add-member-telephone" name="telephone" placeholder="07X XXX XXXX" class="input input-bordered" />
+        </div>
+        <div class="form-control">
+          <label class="label"><span class="label-text">Address</span></label>
+          <textarea id="add-member-address" name="address" placeholder="Full Address" class="textarea textarea-bordered" rows="2"></textarea>
+        </div>
+
+        <!-- Location Field (Janaza, Hifl) -->
+        <div class="form-control member-type-specific-field" data-show-for="janaza hifl">
+          <label class="label"><span class="label-text">Location</span></label>
+          <input type="text" id="add-member-location" name="location" placeholder="e.g., AraliyaUyana, Colombo 05" class="input input-bordered" />
+        </div>
+        
+        <!-- Zone Field (Mahallah, Hifl) -->
+        <div class="form-control member-type-specific-field" data-show-for="mahallah hifl">
+          <label class="label"><span class="label-text">Zone</span></label>
+          <input type="text" id="add-member-zone" name="zone" placeholder="e.g., 2C, Zone A" class="input input-bordered" />
+        </div>
+
+        <!-- Hifl Specific Fields -->
+        <div class="form-control member-type-specific-field hifl-specific-field" data-show-for="hifl" style="display: none;">
+          <label class="label"><span class="label-text">Enrollment Date</span></label>
+          <input type="date" id="add-member-enrollment-date" name="enrollment_date" class="input input-bordered" />
+        </div>
+        <div class="form-control member-type-specific-field hifl-specific-field" data-show-for="hifl" style="display: none;">
+          <label class="label"><span class="label-text">Status</span></label>
+          <select id="add-member-hifl-status" name="status" class="select select-bordered">
+            <option value="Active" selected>Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Graduated">Graduated</option>
+            <option value="Dropped">Dropped</option>
+          </select>
+        </div>
+        
+        <!-- Error Message Placeholder -->
+        <p id="add-member-error-message" class="text-red-500 text-sm mt-2 min-h-[1.25em]"></p>
+
+        <div class="modal-action mt-6">
+          <button type="button" class="btn btn-ghost" onclick="document.getElementById('add-member-modal').close()">Cancel</button>
+          <button type="submit" id="add-member-submit-button" class="btn btn-primary">Add Member</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Add Admin Modal -->
+  <dialog id="add-admin-modal" class="modal">
+    <div class="modal-box w-11/12 max-w-lg"> <!-- Adjusted width -->
+      <form method="dialog">
+        <button id="add-admin-modal-close-button" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <h3 class="font-bold text-lg mb-6">Add New Admin</h3>
+      <form id="add-admin-form" class="space-y-4">
+        <div class="form-control">
+          <label class="label"><span class="label-text">Username</span></label>
+          <input type="text" id="add-admin-username" name="username" placeholder="Enter username" class="input input-bordered w-full" required />
+        </div>
+        
+        <div class="form-control">
+          <label class="label"><span class="label-text">Password</span></label>
+          <input type="password" id="add-admin-password" name="password" placeholder="Enter password" class="input input-bordered w-full" required />
+          <label class="label cursor-pointer justify-start gap-2 mt-1">
+            <input type="checkbox" id="add-admin-show-password" class="checkbox checkbox-xs" />
+            <span class="label-text text-xs">Show Password</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">Confirm Password</span></label>
+          <input type="password" id="add-admin-confirm-password" name="confirmPassword" placeholder="Confirm password" class="input input-bordered w-full" required />
+          <label class="label cursor-pointer justify-start gap-2 mt-1">
+            <input type="checkbox" id="add-admin-show-confirm-password" class="checkbox checkbox-xs" />
+            <span class="label-text text-xs">Show Password</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label"><span class="label-text">Address</span></label>
+          <textarea id="add-admin-address" name="address" placeholder="Enter address" class="textarea textarea-bordered w-full" rows="2" required></textarea>
+        </div>
+        
+        <!-- Role and Location Access fields removed as per task -->
+
+        <!-- Error Message Placeholder -->
+        <p id="add-admin-error-message" class="text-red-500 text-sm mt-2 min-h-[1.25em]"></p>
+
+        <div class="modal-action mt-6">
+          <button type="button" class="btn btn-ghost" onclick="document.getElementById('add-admin-modal').close()">Cancel</button>
+          <button type="submit" id="add-admin-submit-button" class="btn btn-primary">Add Admin</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- JavaScript -->
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

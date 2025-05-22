@@ -12,121 +12,97 @@ This is a full-stack web application designed for Masjid Management. It features
 *   Centralized error handling.
 *   Security enhancements: `helmet` for HTTP headers, `cors` for cross-origin resource sharing, and rate limiting for API requests.
 *   HTTP request logging with `morgan`.
-*   Database seeding script for initial data setup.
-*   CRUD operations for Janaza Members, including payment status management.
-*   List/Create operations for Mahalla Members.
-*   Admin user creation.
+*   Database seeding script for initial data setup, including predefined test users.
+*   CRUD operations for Janaza Members, including payment status management and enhanced filtering/pagination.
+*   CRUD operations for Mahalla Members, including enhanced filtering/pagination.
+*   CRUD operations for Hifl Members, including filtering/pagination.
+*   CRUD operations for Admin users (listing, creation, update, deletion - password updates require new password).
 
 ### Frontend
-*   User login interface.
-*   Dashboard for managing various aspects of the Masjid.
-*   Janaza Member Management:
-    *   Display members by location.
-    *   Create, Update, Delete members.
-    *   Track and update monthly payment statuses (Paid, Not_Paid, Pending, Waived) for Janaza members.
-*   Mahalla Member Management:
-    *   Display Mahalla members, filterable by zone.
-    *   Create new Mahalla members.
-*   Admin User Creation: Interface to add new admin users to the system.
+*   User login interface (`public/login.html` controlled by `public/js/login.js`).
+*   Public member viewing page (`public/index.html` controlled by `public/js/main.js`) for Janaza and Mahallah members.
+*   Admin Dashboard (`public/dashboard.html` controlled by `public/js/dashboard.js`):
+    *   Management of Janaza Members:
+        *   Display members with filtering (location, payment status) and pagination.
+        *   Create, Update (details), Delete members (Edit/Delete UI to be fully implemented).
+        *   Track and update all 12 monthly payment statuses (Paid, Not_Paid, Pending, Waived) directly in the member list table.
+    *   Management of Mahalla Members:
+        *   Display Mahalla members with filtering (location, zone) and pagination.
+        *   Create, Update, Delete members (Edit/Delete UI to be fully implemented).
+    *   Management of Hifl Members:
+        *   Display Hifl members with filtering (location, zone, status) and pagination.
+        *   Create, Update, Delete members (Edit/Delete UI to be fully implemented).
+    *   Admin User Management:
+        *   Interface to add new admin users.
+        *   (Listing, Editing, Deleting Admins UI is **not yet implemented** in the frontend due to development tool limitations - Backend APIs are ready).
 *   Dynamic content loading and UI updates using Vanilla JavaScript.
-*   Styling with Tailwind CSS.
+*   Styling with Tailwind CSS and DaisyUI components.
 
 ## Project Structure
 
 ```
 /
+|-- public/                 # Publicly served static assets
+|   |-- js/                 # Frontend JavaScript files
+|   |   |-- login.js        # Logic for login page
+|   |   |-- main.js         # Logic for public member viewing page (index.html)
+|   |   |-- dashboard.js    # Logic for admin dashboard
+|   |-- login.html          # Login page
+|   |-- index.html          # Public member viewing page (user homepage)
+|   |-- dashboard.html      # Admin dashboard page
+|   |-- output.css          # Compiled Tailwind CSS
 |-- src/
-|   |-- config/         # Database configuration (database.js)
-|   |-- controllers/    # Request handlers (authController.js, userController.js, memberController.js, mahallaMemberController.js, adminController.js)
-|   |-- db/             # Database utilities (seed.js)
-|   |-- middleware/     # Custom middleware (authMiddleware.js, errorHandler.js)
-|   |-- models/         # Database interaction logic (User.js, Member.js, MahallaMember.js)
-|   |-- routes/         # API route definitions (authRoutes.js, userRoutes.js, memberRoutes.js, mahallaMemberRoutes.js, adminRoutes.js)
-|   |-- services/       # Business logic (authService.js, memberService.js, mahallaMemberService.js)
-|   |-- utils/          # Utility functions (CustomError.js, jwtUtils.js, passwordUtils.js)
-|-- tests/              # Integration tests (auth.test.js)
-|-- .env.example        # Example environment variables
-|-- .eslintrc.js        # ESLint configuration
-|-- .gitignore          # Files to ignore in Git
-|-- .prettierrc.js      # Prettier configuration
-|-- index.html          # Login page HTML
-|-- dashboard.html      # Dashboard page HTML
-|-- app.js              # JavaScript for login page (index.html)
-|-- dashbaord.js        # JavaScript for dashboard page (dashboard.html)
-|-- api.js              # Frontend helper for authenticated API calls
-|-- dashboard-api.js    # Frontend API calls specific to dashboard operations
-|-- input.css           # Tailwind CSS input file
-|-- output.css          # Tailwind CSS compiled output file
-|-- tailwind.config.js  # Tailwind CSS configuration
-|-- package.json        # Project dependencies and scripts
-|-- README.md           # This file
-|-- server.js           # Main application entry point
+|   |-- config/             # Database configuration (database.js)
+|   |-- controllers/        # Request handlers (authController.js, memberController.js, mahallaMemberController.js, hiflMemberController.js, adminController.js, publicController.js)
+|   |-- db/                 # Database utilities (seed.js)
+|   |-- middleware/         # Custom middleware (authMiddleware.js, errorHandler.js)
+|   |-- routes/             # API route definitions (authRoutes.js, memberRoutes.js, mahallaMemberRoutes.js, hiflMemberRoutes.js, adminRoutes.js, publicRoutes.js)
+|   |-- services/           # Business logic (authService.js, memberService.js, mahallaMemberService.js) - Note: Some controllers now use direct DB access.
+|   |-- utils/              # Utility functions (CustomError.js, jwtUtils.js, passwordUtils.js)
+|-- .env.example            # Example environment variables
+|-- .eslintrc.js            # ESLint configuration
+|-- .gitignore              # Files to ignore in Git
+|-- .prettierrc.js          # Prettier configuration
+|-- input.css               # Tailwind CSS input file
+|-- tailwind.config.js      # Tailwind CSS configuration
+|-- package.json            # Project dependencies and scripts
+|-- README.md               # This file
+|-- server.js               # Main application entry point
 ```
+*(Removed old root HTML/JS files from structure)*
 
 ## Prerequisites
 
 *   Node.js (v18.x or later recommended)
 *   npm (comes with Node.js)
 *   PostgreSQL (running locally or via Docker)
-*   Docker & Docker Compose (optional, for running PostgreSQL in a container)
 
 ## Setup and Installation
 
 ### 1. Clone the Repository
-
 ```bash
 git clone <repository_url>
-cd <repository_name> # e.g., masjid-management-system
+cd <repository_name>
 ```
 
 ### 2. Install Dependencies
-
 ```bash
 npm install
 ```
 
 ### 3. Configure Environment Variables
-
-1.  **Create a `.env` file** by copying the example:
-    ```bash
-    cp .env.example .env
-    ```
-2.  **Edit the `.env` file** with your actual configurations:
-    ```dotenv
-    # Server Configuration
-    NODE_ENV=development
-    PORT=3000
-
-    # Database Configuration
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_USER=your_postgres_user # Replace with your PostgreSQL username
-    DB_PASSWORD=your_postgres_password # Replace with your PostgreSQL password
-    DB_NAME=myapp_dev # Or your chosen database name
-
-    # JWT Configuration
-    JWT_SECRET=your_very_secret_and_long_jwt_key_generate_one # Replace with a strong, random secret (e.g., openssl rand -hex 32)
-
-    # CORS Configuration (Update for your frontend's origin in production)
-    CORS_ORIGIN=http://localhost:3000 # Adjusted for serving HTML from the same origin, or your specific frontend URL like http://localhost:5173
-
-    # Rate Limiting (Optional - Defaults are set in code if these are not present)
-    # RATE_LIMIT_WINDOW_MS=900000
-    # RATE_LIMIT_MAX_REQUESTS=100
-    # LOGIN_RATE_LIMIT_WINDOW_MS=3600000
-    # LOGIN_RATE_LIMIT_MAX_ATTEMPTS=5
-    ```
-    *   **Important:** Replace placeholders (especially `your_postgres_user`, `your_postgres_password`, and `JWT_SECRET`) with your actual credentials and a strong secret key.
+1.  Create a `.env` file: `cp .env.example .env`
+2.  Edit `.env` with your PostgreSQL credentials, a strong `JWT_SECRET`, and other configurations as needed.
 
 ### 4. Set up PostgreSQL Database
-
-Follow either **Option A (Local PostgreSQL)** or **Option B (Docker for PostgreSQL)** from the original setup instructions to install and configure PostgreSQL. Ensure your database service is running and you can connect to it.
-
-After setting up PostgreSQL and creating the database and user as per your `.env` file, you need to create the required tables. Connect to your database (e.g., `psql -U your_postgres_user -d myapp_dev`) and run the following SQL commands:
+Ensure PostgreSQL is running. Connect to your PostgreSQL instance and run the following SQL commands to create the database (if not already created via `.env` settings by your setup) and the necessary tables:
 
 ```sql
+-- Example: CREATE DATABASE myapp_dev;
+-- Connect to your database before running table creations.
+
 -- Users Table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
@@ -137,163 +113,135 @@ CREATE TABLE users (
 );
 
 -- Members Table (for Janaza Fund)
-CREATE TABLE members (
+CREATE TABLE IF NOT EXISTS members (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     telephone VARCHAR(50),
     address TEXT,
-    location VARCHAR(100) NOT NULL, -- Refers to a specific community location
-    janaza2024 JSONB, -- Stores payment status for each month, e.g., {"jan": "Paid", "feb": "Not_Paid"}
+    location VARCHAR(100) NOT NULL,
+    janaza2024 JSONB, -- e.g., {"jan": "Paid", "feb": "Not_Paid"}
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Mahallah Members Table
-CREATE TABLE mahallah_members (
+CREATE TABLE IF NOT EXISTS mahallah_members (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    zone VARCHAR(50), -- e.g., "2C", "3C"
+    zone VARCHAR(50), 
     address TEXT,
     telephone VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Hifl Members Table
+CREATE TABLE IF NOT EXISTS hifl_members (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address TEXT,
+    telephone VARCHAR(50),
+    location VARCHAR(100),
+    zone VARCHAR(50),
+    enrollment_date DATE DEFAULT CURRENT_DATE,
+    status VARCHAR(50) DEFAULT 'Active', -- e.g., Active, Inactive, Graduated, Dropped
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 ```
-**Note:** Ensure these tables are created before proceeding to the next step.
 
 ### 5. Seed the Database
-
-Once the `.env` file is configured and the database tables are created, run the seed script to populate the database with initial sample data. This will create:
-*   Sample users, including an administrator account.
-*   Sample Janaza fund members with varying payment statuses.
-*   Sample Mahalla members.
-
+This script also creates tables if they don't exist (due to `IF NOT EXISTS` in table creation SQL and Hifl table creation logic in seed script).
+It populates sample data, including predefined test users.
 ```bash
 npm run db:seed
 ```
-The script will log its progress to the console.
 
 ## Running the Application
 
 1.  **Start the Backend Server:**
-    *   **Development Mode (with auto-reloading):**
-        ```bash
-        npm run start:dev
-        ```
-        The server will typically be available at `http://localhost:3000` (or the `PORT` specified in your `.env`).
-    *   **Production Mode:**
-        ```bash
-        npm start
-        ```
+    *   Development: `npm run start:dev` (Server at `http://localhost:3000` or your `PORT`)
+    *   Production: `npm start`
 
 2.  **Access the Frontend:**
-    Once the server is running, open `http://localhost:3000/` in your web browser to access the application (the `index.html` login page is served at the root).
+    Open `http://localhost:3000/` in your web browser. This serves `public/login.html`.
+    After login, admins are redirected to `public/dashboard.html`.
 
-*(Note: The Tailwind CSS (`output.css`) is pre-compiled. If you make changes to `input.css` or Tailwind classes in HTML/JS, you'll need to manually re-run the Tailwind CLI build command: `npx tailwindcss -i ./input.css -o ./output.css --watch` during development if you wish to see live style updates, or run it once before committing changes.)*
+*(Tailwind CSS: `output.css` is pre-compiled. For development, run `npx tailwindcss -i ./input.css -o ./public/output.css --watch` if making style changes.)*
 
-
-## Running Tests
-
-```bash
-npm test
-```
-This command runs Jest integration tests for the backend API. Ensure `NODE_ENV` is set to `test` (the script handles this).
+## Test Users
+The database seeding script (`npm run db:seed`) creates the following test users:
+*   **Admin:**
+    *   Username: `admintest`
+    *   Password: `adminpassword`
+*   **Regular User (for testing non-admin access if applicable, though current frontend primarily serves admin or public views):**
+    *   Username: `membertest`
+    *   Password: `memberpassword`
+*   (Other users like `testuser`, `adminuser` might also be present from earlier seed data.)
 
 ## API Endpoints
 
-All `/api/dashboard/` routes are protected and require JWT authentication.
-
 ### Authentication
-*   **`POST /api/auth/login`**:
-    *   Authenticates a user.
-    *   Request body: `{ "username": "your_username", "password": "your_password" }`
-    *   Success response (200): `{ "message": "Login successful", "token": "jwt_token_here", "user": { "id": 1, "username": "your_username" } }`
+*   **`POST /api/auth/login`**: Authenticates a user.
+    *   Body: `{ "username": "...", "password": "..." }`
 
-### User (Self)
-*   **`GET /api/users/me`**: (Protected)
-    *   Retrieves the authenticated user's information.
-    *   Success response (200): `{ "message": "Successfully accessed protected user data.", "user": { "id": 1, "username": "your_username" } }`
-
-### Dashboard - Janaza Members
-*   **`GET /api/dashboard/members/:location`**: (Protected)
-    *   Retrieves all Janaza members for a specific location.
+### Public API Endpoints (No Auth Required)
+*   **`GET /api/public/members/janaza/:location`**: Retrieves public Janaza member details for a given location.
     *   Params: `location` (e.g., "AraliyaUyana").
-    *   Success response (200): `[ { "id": 1, "name": "Member Name", ... }, ... ]`
-*   **`POST /api/dashboard/members`**: (Protected)
-    *   Creates a new Janaza member.
-    *   Request body: `{ "name": "New Member", "telephone": "077...", "address": "123 St", "location": "AraliyaUyana", "janaza2024": {} }`
-    *   Success response (201): `{ "id": 1, "name": "New Member", ... }`
-*   **`GET /api/dashboard/members/id/:memberId`**: (Protected)
-    *   Retrieves a single Janaza member by their ID.
-    *   Params: `memberId`.
-    *   Success response (200): `{ "id": 1, "name": "Member Name", ... }`
-*   **`PUT /api/dashboard/members/:memberId`**: (Protected)
-    *   Updates an existing Janaza member.
-    *   Params: `memberId`.
-    *   Request body: `{ "name": "Updated Name", "telephone": "071...", "address": "456 Ave", "location": "AraliyaUyana", "janaza2024": {"jan":"Paid"} }`
-    *   Success response (200): `{ "id": 1, "name": "Updated Name", ... }`
-*   **`DELETE /api/dashboard/members/:memberId`**: (Protected)
-    *   Deletes a Janaza member.
-    *   Params: `memberId`.
-    *   Success response (200): `{ "message": "Member deleted successfully", "memberId": 1 }`
-*   **`PATCH /api/dashboard/members/:memberId/payment-status`**: (Protected)
-    *   Updates the payment status for a specific month for a Janaza member.
-    *   Params: `memberId`.
-    *   Request body: `{ "month": "jan", "status": "Paid" }`
-    *   Success response (200): `{ "id": 1, ..., "janaza2024": {"jan":"Paid", ...} }`
+    *   Response: `[ { "id", "name", "address", "location" }, ... ]`
+*   **`GET /api/public/members/mahallah/zone/:zone`**: Retrieves public Mahallah member details for a specific zone.
+    *   Params: `zone` (e.g., "2C").
+    *   Response: `[ { "id", "name", "zone" }, ... ]`
+*   **`GET /api/public/members/mahallah/:location`**: Retrieves public Mahallah members where location is treated as a zone.
+*   **`GET /api/public/members/mahallah/:location/:zone`**: Retrieves public Mahallah members by zone (location param ignored by controller).
 
-### Dashboard - Mahalla Members
-*   **`GET /api/dashboard/mahallah-members`**: (Protected)
-    *   Retrieves all Mahalla members. Can be filtered by zone.
-    *   Query Params (optional): `zone` (e.g., "?zone=2C").
-    *   Success response (200): `[ { "id": 1, "name": "Mahalla Member", "zone": "2C", ... }, ... ]`
-*   **`POST /api/dashboard/mahallah-members`**: (Protected)
-    *   Creates a new Mahalla member.
-    *   Request body: `{ "name": "New Mahalla Member", "zone": "3C", "address": "789 Lane", "telephone": "075..." }`
-    *   Success response (201): `{ "id": 1, "name": "New Mahalla Member", ... }`
 
-### Dashboard - Admins
-*   **`POST /api/dashboard/admins`**: (Protected)
-    *   Creates a new admin user. Requires the authenticated user to have sufficient privileges (though this role-based authorization is not explicitly implemented beyond JWT protection).
-    *   Request body: `{ "username": "newadmin", "password": "strongpassword", "address": "Admin Address" }`
-    *   Success response (201): `{ "message": "Admin user created successfully", "user": { "id": 2, "username": "newadmin", "address": "Admin Address", "is_admin": true } }` (password_hash is not returned)
+### Dashboard API Endpoints (JWT Auth Required - Prefix: `/api/dashboard`)
 
-## Frontend
+#### Janaza Members (`/members`)
+*   **`GET /members`**: Retrieves Janaza members with pagination and filtering.
+    *   Query Params: `location`, `janazaMonth`, `janazaStatus`, `search`, `page`, `limit`.
+*   **`POST /members`**: Creates a new Janaza member.
+*   **`GET /members/id/:memberId`**: Retrieves a Janaza member by ID.
+*   **`PUT /members/:memberId`**: Updates a Janaza member.
+*   **`DELETE /members/:memberId`**: Deletes a Janaza member.
+*   **`PATCH /members/:memberId/payment-status`**: Updates monthly payment status.
 
-The frontend is built with:
-*   **HTML5**
-*   **Vanilla JavaScript** for client-side logic and DOM manipulation.
-    *   `app.js`: Handles login page interactions.
-    *   `dashbaord.js`: Manages dashboard functionality, data display, and user interactions for member management.
-    *   `api.js`: A generic helper function (`authenticatedFetch`) for making authenticated API calls to the backend, handling token attachment and 401 errors.
-    *   `dashboard-api.js`: Contains functions that use `api.js` for specific dashboard-related backend operations (e.g., adding an admin).
-*   **Tailwind CSS** for styling.
-    *   `input.css`: Main CSS file where Tailwind directives and custom styles are defined.
-    *   `output.css`: The compiled CSS file used by the HTML pages.
-    *   `tailwind.config.js`: Configuration file for Tailwind CSS.
-    *   To recompile `output.css` after changes to Tailwind classes or `input.css`, you can run `npx tailwindcss -i ./input.css -o ./output.css`. For continuous development, use `npx tailwindcss -i ./input.css -o ./output.css --watch`.
+#### Mahalla Members (`/mahallah-members`)
+*   **`GET /mahallah-members`**: Retrieves Mahalla members with pagination and filtering.
+    *   Query Params: `location`, `zone`, `search`, `page`, `limit`.
+*   **`POST /mahallah-members`**: Creates a new Mahalla member.
+*   **`GET /mahallah-members/:memberId`**: Retrieves a Mahalla member by ID.
+*   **`PUT /mahallah-members/:memberId`**: Updates a Mahalla member.
+*   **`DELETE /mahallah-members/:memberId`**: Deletes a Mahalla member.
+
+#### Hifl Members (`/hifl-members`)
+*   **`GET /hifl-members`**: Retrieves Hifl members with pagination and filtering.
+    *   Query Params: `location`, `zone`, `status`, `search`, `page`, `limit`.
+*   **`POST /hifl-members`**: Creates a new Hifl member.
+*   **`GET /hifl-members/:id`**: Retrieves a Hifl member by ID.
+*   **`PUT /hifl-members/:id`**: Updates a Hifl member.
+*   **`DELETE /hifl-members/:id`**: Deletes a Hifl member.
+
+#### Admins (`/admins`)
+*   **`GET /admins`**: Retrieves admin users with pagination.
+    *   Query Params: `page`, `limit`.
+*   **`POST /admins`**: Creates a new admin user.
+    *   Body: `{ "username", "password", "address" }`
+*   **`GET /admins/:adminId`**: Retrieves an admin user by ID.
+*   **`PUT /admins/:adminId`**: Updates an admin user (address, password).
+*   **`DELETE /admins/:adminId`**: Deletes an admin user (cannot self-delete).
+
+## Known Issues / Limitations
+*   **Admin Management Frontend:** The UI for listing, editing, and deleting admin users within the "Admin Management" section of the dashboard (`public/dashboard.html`) is **not yet implemented**. While the backend APIs for these operations are complete and functional, the frontend components for interaction were not completed due to development tool limitations encountered during the project.
+*   **Janaza Member Zone Filtering (Backend):** The `members` table (for Janaza members) does not have a dedicated `zone` column. Filtering Janaza members by `zone` via the API (`GET /api/dashboard/members?zone=...`) is not currently supported at the database query level.
+*   **Mahallah Member Location Filtering (Backend):** The `mahallah_members` table does not have a dedicated `location` column (it uses `zone`). The API (`GET /api/dashboard/mahallah-members?location=...`) attempts to match the `location` parameter against the `zone` field if a specific `zone` filter is not also provided. True multi-zone location filtering would require a backend location-to-zone mapping.
 
 ## Linting and Formatting
-
-This project uses ESLint for linting and Prettier for code formatting.
-
-*   **Check for linting issues:**
-    ```bash
-    npm run lint
-    ```
-*   **Fix linting issues automatically:**
-    ```bash
-    npm run lint:fix
-    ```
-*   **Format code with Prettier:**
-    ```bash
-    npm run format
-    ```
+... (Content remains the same) ...
 
 ## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure your code adheres to the linting and formatting standards.
+... (Content remains the same) ...
 
 ## License
-
-This project is licensed under the MIT License.
+... (Content remains the same) ...

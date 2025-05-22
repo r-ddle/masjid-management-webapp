@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="masjid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Masjid Management System</title>
+    <link rel="stylesheet" href="/output.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900,1&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-display bg-gray-100 flex items-center justify-center h-screen">
+    <main class="card shadow-xl w-full max-w-md">
+      <div class="card-body">
+        <h2 class="card-title text-2xl font-bold text-center mb-6">Masjid Management Login</h2>
+        <form id="loginForm">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Username</span>
+            </label>
+            <div class="relative flex items-center">
+              <i class="ph-fill ph-user ph-lg opacity-70 absolute left-3 text-gray-400"></i>
+              <input
+                type="text"
+                name="username"
+                placeholder="Enter your Username"
+                class="input input-bordered pl-10 w-full"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-control mt-4">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <div class="relative flex items-center">
+              <i class="ph-fill ph-lock ph-lg opacity-70 absolute left-3 text-gray-400"></i>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your Password"
+                class="input input-bordered pl-10 w-full"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-control mt-4">
+            <label class="label cursor-pointer justify-start gap-2">
+              <input type="checkbox" id="showPassword" class="checkbox checkbox-sm" />
+              <span class="label-text">Show Password</span>
+            </label>
+          </div>
+          <p id="errorMessage" class="text-red-500 text-sm mt-2 text-center min-h-[1.25em]"></p> <!-- Added min-h for layout consistency -->
+          <button
+            type="submit"
+            id="loginButton"
+            class="btn btn-primary mt-6 w-full hover:-translate-y-0.5 transform transition-transform duration-150"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </main>
+    <script src="/js/login.js"></script> 
+  </body>
+</html>

@@ -7,6 +7,9 @@ async function seedUsers() {
     { username: 'testuser', password: 'password123', address: '123 Test St', isAdmin: false },
     { username: 'anotheruser', password: 'password456', address: '456 Another Rd', isAdmin: false },
     { username: 'adminuser', password: 'adminpass', address: '789 Admin Ave', isAdmin: true },
+    // Predefined test users
+    { username: 'admintest', password: 'adminpassword', address: 'Admin Test Address', isAdmin: true },
+    { username: 'membertest', password: 'memberpassword', address: 'Member Test Address', isAdmin: false },
   ];
 
   for (const userData of usersToSeed) {
@@ -28,6 +31,31 @@ async function seedUsers() {
     }
   }
   console.log('User seeding complete.');
+}
+
+async function createHiflMembersTable() {
+  console.log('Creating hifl_members table if it does not exist...');
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS hifl_members (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        address TEXT,
+        telephone VARCHAR(50),
+        location VARCHAR(100),
+        zone VARCHAR(50),
+        enrollment_date DATE DEFAULT CURRENT_DATE,
+        status VARCHAR(50) DEFAULT 'Active',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  try {
+    await pool.query(createTableQuery);
+    console.log('hifl_members table check/creation complete.');
+  } catch (error) {
+    console.error('Error creating hifl_members table:', error.message);
+    throw error; // Propagate error to stop seeding if table creation fails
+  }
 }
 
 async function seedMembers() {
@@ -86,9 +114,11 @@ async function seedMahallaMembers() {
 async function main() {
   console.log('Starting database seeding process...');
   try {
+    await createHiflMembersTable(); // Create Hifl table first
     await seedUsers();
     await seedMembers();
     await seedMahallaMembers();
+    // Placeholder for seedHiflMembers() in the future
     console.log('Database seeding process completed successfully.');
   } catch (error) {
     console.error('An error occurred during the seeding process:', error);

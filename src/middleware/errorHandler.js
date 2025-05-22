@@ -25,13 +25,21 @@ const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
-  // For 500 errors in production, don't send the stack trace to the client
-  if (process.env.NODE_ENV === 'production' && statusCode === 500) {
+  // If the request accepts HTML and it's a 401 error, redirect to login
+  if (statusCode === 401 && req.accepts('html')) {
+    // Store the original URL in session or query param to redirect back after login (optional)
+    // req.session.returnTo = req.originalUrl; 
+    return res.redirect('/login.html');
+  }
+
+  // For 500 errors in production, don't send the stack trace to the client for JSON responses
+  if (process.env.NODE_ENV === 'production' && statusCode === 500 && !req.accepts('html')) {
     return res.status(statusCode).json({
       message: 'An unexpected error occurred on the server.',
     });
   }
 
+  // For all other errors or non-HTML requests, send JSON response
   return res.status(statusCode).json({
     message,
     // Only include stack trace in development for debugging

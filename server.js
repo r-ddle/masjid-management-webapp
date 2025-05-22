@@ -7,6 +7,9 @@ const userRoutes = require('./src/routes/userRoutes'); // Import user routes
 const memberRoutes = require('./src/routes/memberRoutes'); // Import member routes
 const mahallaMemberRoutes = require('./src/routes/mahallaMemberRoutes'); // Import MahallaMember routes
 const adminRoutes = require('./src/routes/adminRoutes'); // Import Admin routes
+const publicRoutes = require('./src/routes/publicRoutes'); // Import public routes
+const hiflMemberRoutes = require('./src/routes/hiflMemberRoutes'); // Import Hifl member routes
+const { protect } = require('./src/middleware/authMiddleware'); // Import protect middleware
 
 const helmet = require('helmet'); // Import helmet
 
@@ -51,14 +54,16 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 
 // Serve static files from 'public' folder (if you have one)
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve login page (assuming index.html is in the root or a 'public' folder)
+// Serve login page
 app.get('/', (req, res) => {
-    // If you have a public folder for static assets like index.html:
-    // res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    // If index.html is in the root directory:
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// Protected HTML routes
+app.get('/dashboard.html', protect, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
 // API Routes
@@ -67,6 +72,8 @@ app.use('/api/users', userRoutes); // Mount user routes under /api/users
 app.use('/api/dashboard', memberRoutes); // Mount member routes under /api/dashboard
 app.use('/api/dashboard/mahallah-members', mahallaMemberRoutes); // Mount MahallaMember routes
 app.use('/api/dashboard/admins', adminRoutes); // Mount Admin routes
+app.use('/api/dashboard/hifl-members', hiflMemberRoutes); // Mount Hifl member routes
+app.use('/api/public', publicRoutes); // Mount public routes under /api/public
 
 // Global error handler (optional, can be expanded in src/middleware)
 // app.use((err, req, res, next) => {
