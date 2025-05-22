@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input-error {
+    border-color: var(--fallback-er,oklch(var(--er)/var(--tw-border-opacity)));
+    outline-color: var(--fallback-er,oklch(var(--er)/1));
+}

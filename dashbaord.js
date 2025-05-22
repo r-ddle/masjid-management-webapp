@@ -1,66 +1,62 @@
-// when the site loads this shit pops up
+// Initialize dashboard view on DOMContentLoaded.
 document.addEventListener('DOMContentLoaded', function() {
     const janazaDetails = document.getElementById('janaza-details');
     const mahallaDetails = document.getElementById('mahallah-details');
+    const hiflDetails = document.getElementById('hifl-details');
     const janazaContent = document.getElementById('janaza-content');
     const mahallaContent = document.getElementById('mahallah-content');
     const hiflContent = document.getElementById('hifl-content');
-    const hiflDetails = document.getElementById('hifl-details');
     const locationSelector = document.getElementById('location-selector');
 
-    janazaContent.style.display = 'block';
-    mahallaContent.style.display = 'none';
-    hiflContent.style.display = 'none';
-    hiflContent.style.display = 'none';
-    locationSelector.style.display = 'block';
-    updateHeaderText('Select a Location');
+    function setActiveView(viewName) {
+        // Hide all content sections
+        janazaContent.style.display = 'none';
+        mahallaContent.style.display = 'none';
+        hiflContent.style.display = 'none';
+
+        // Remove 'active' class from all nav links
+        janazaDetails.classList.remove('active');
+        mahallaDetails.classList.remove('active');
+        hiflDetails.classList.remove('active');
+
+        // Show/hide location selector
+        locationSelector.style.display = 'none'; // Default to hidden
+
+        if (viewName === 'janaza') {
+            janazaContent.style.display = 'block';
+            janazaDetails.classList.add('active');
+            locationSelector.style.display = 'block';
+            updateHeaderText('Select a Location');
+        } else if (viewName === 'mahalla') {
+            mahallaContent.style.display = 'block';
+            mahallaDetails.classList.add('active');
+            updateHeaderText('Mahallah Member Details');
+            loadMahallaMembers(); // Specific to Mahalla view
+        } else if (viewName === 'hifl') {
+            hiflContent.style.display = 'block'; // Corrected: show hiflContent
+            hiflDetails.classList.add('active');
+            updateHeaderText('Hifl Madarasa');
+        }
+    }
 
     janazaDetails.addEventListener('click', function() {
-        janazaContent.style.display = 'block';
-        mahallaContent.style.display = 'none';
-        locationSelector.style.display = 'block';
-        janazaDetails.classList.add('active');
-        mahallaDetails.classList.remove('active');
-        updateHeaderText('Select a Location');
+        setActiveView('janaza');
     });
 
     mahallaDetails.addEventListener('click', function() {
-        janazaContent.style.display = 'none';
-        mahallaContent.style.display = 'block';
-        locationSelector.style.display = 'none';
-        mahallaDetails.classList.add('active');
-        janazaDetails.classList.remove('active');
-        hiflDetails.classList.remove('active');
-        updateHeaderText('Mahallah Member Details');
-        loadMahallaMembers();
+        setActiveView('mahalla');
     });
-
-
     
     hiflDetails.addEventListener('click', function() {
-        janazaContent.style.display = 'none';
-        mahallaContent.style.display = 'block';
-        hiflContent.style.display = 'block';
-        locationSelector.style.display = 'none';
-        hiflDetails.classList.add('active');
-        janazaDetails.classList.remove('active');
-        mahallaDetails.classList.remove('active');
-        updateHeaderText('Hifl Madarasa');
-       
+        setActiveView('hifl');
     });
 
-
-    hiflContent.style.display = 'block';
-    mahallaContent.style.display = 'none';
-    hiflContent.style.display = 'none';
-    hiflContent.style.display = 'none';
-    locationSelector.style.display = 'block';
-    updateHeaderText('Hifl Madarsa ');
-
+    // Set the default view
+    setActiveView('janaza'); // Default to Janaza view
 
 });
 
-// Let Content Load and check if webview works if not then we screwed fr
+// Check for WebView2 availability on DOMContentLoaded.
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
     if (window.chrome && window.chrome.webview) {
@@ -70,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Load Data for Each Location (FUCK THIS WAS PAINFUL)
+// Function to load data for a specific location.
 function loadLocation(location) {
     console.log(`Loading location: ${location}`);
     fetchMembersAndPopulateTable(location);
@@ -78,45 +74,11 @@ function loadLocation(location) {
 }
 
 
-/*g0j0's Code Dont TOuch I mean it!!
-function loadZone(Zone) {
-    console.log(`Loading location: ${Zone}`);
-    fetchMembersAndPopulateTable(Zone);
-}
-
-function fetchMembersAndPopulateTable(Zone) {
-    try {
-        console.log(`Fetching members for location: ${Zone}`);
-        chrome.webview.postMessage({ action: "getMembers", Zone: Zone });
-    } catch (error) {
-        console.error("Error fetching members:", error);
-    }
-}
-
-
-function handleMembers(Zone, membersJson) {
-    console.log(`Received ${Zone} members data:`, membersJson);
-    populateTable(membersJson);
-}
-
-
-
-chrome.webview.addEventListener('message', (event) => {
-    console.log("Received message from WebView:", event);
-    const { action, data } = event;
-    if (action === "getMembers") {
-        const Zone = data.location;
-        handleMembers(Zone, data.members);
-    }
-});*/
-
-
-
 function loadMahallaMembers() {
     chrome.webview.postMessage({ action: "getMahallaMembers" });
 }
 
-// Ask csharp "boi gimme them members list asap"
+// Fetch member list from C# backend.
 function fetchMembersAndPopulateTable(location) {
     try {
         console.log(`Fetching members for location: ${location}`);
@@ -126,7 +88,7 @@ function fetchMembersAndPopulateTable(location) {
     }
 }
 
-// handle them members list boi ~Riddle
+// Callback function to handle received member list.
 function handleMembers(location, membersJson) {
     console.log(`Received ${location} members data:`, membersJson);
     populateTable(membersJson);
@@ -156,7 +118,7 @@ function handleMahallaMembers(membersJson) {
     });
 }
 
-// touch this code and your entire bloodline is gone ~g0j0
+// Update payment status for a member.
 function updatePaymentStatus(memberId, month, status) {
     const locationHeader = document.getElementById('location-header');
     const statusLocation = locationHeader.dataset.shortForm;
@@ -174,7 +136,7 @@ function updatePaymentStatus(memberId, month, status) {
     chrome.webview.postMessage(message);
 }
 
-// DO NOT FUCK WITH THIS CODE
+// Populate the main data table with member information.
 function populateTable(membersJson) {
     const tableBody = document.querySelector("tbody");
     tableBody.innerHTML = ""; // Clear existing rows
@@ -185,7 +147,7 @@ function populateTable(membersJson) {
     });
 }
 
-// if i see a single word missing get ready to meet god
+// Create HTML string for a single table row.
 function createTableRow(member) {
     const months = [
         "jan", "feb", "mar", "apr", "may", "jun",
@@ -196,7 +158,7 @@ function createTableRow(member) {
             (month) =>
                 `<div class="flex flex-col items-center font-display">
                     <span class="text-xs font-semibold mb-1">${month.toUpperCase()}</span>
-                    <select class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    <select class="select select-bordered select-xs w-full font-display"
                             onchange="updatePaymentStatus('${member.Id}', '${month}', this.value)">
                         <option value="Not_Paid" ${member.Janaza2024[month] === "Not_Paid" ? "selected" : ""}>Not Paid</option>
                         <option value="Paid" ${member.Janaza2024[month] === "Paid" ? "selected" : ""}>Paid</option>
@@ -207,62 +169,60 @@ function createTableRow(member) {
 
     return `
         <tr id="row-${member.Id}" class="font-display">
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex items-center gap-3">
                     <div class="flex flex-col">
-                        <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="name-${member.Id}">
+                        <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content" id="name-${member.Id}">
                             ${member.Name}
                         </p>
-                        <input type="text" name="username" placeholder="Enter your Username" class="inputuser input input-bordered pl-2 w-48 hidden" id="name-input-${member.Id}" value="${member.Name}" required>
-                        <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900 opacity-70" id="telephone-${member.Id}">
+                        <input type="text" name="username" placeholder="Enter your Username" class="input input-bordered pl-2 w-48 hidden" id="name-input-${member.Id}" value="${member.Name}" required>
+                        <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content opacity-70" id="telephone-${member.Id}">
                             ${member.Telephone}
                         </p>
-                        <input type="text" name="telephone" placeholder="Enter your Telephone" class="inputuser input input-bordered pl-2 w-48 hidden" id="telephone-input-${member.Id}" value="${member.Telephone}" required>
+                        <input type="text" name="telephone" placeholder="Enter your Telephone" class="input input-bordered pl-2 w-48 hidden" id="telephone-input-${member.Id}" value="${member.Telephone}" required>
                     </div>
                 </div>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex flex-col">
-                    <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="address-${member.Id}">
+                    <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content" id="address-${member.Id}">
                         ${member.Address}
                     </p>
-                    <input type="text" name="address" placeholder="Enter your Address" class="inputuser input input-bordered pl-2 w-48 hidden" id="address-input-${member.Id}" value="${member.Address}" required>
+                    <input type="text" name="address" placeholder="Enter your Address" class="input input-bordered pl-2 w-48 hidden" id="address-input-${member.Id}" value="${member.Address}" required>
                 </div>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex flex-wrap gap-2 font-display">
                     ${paymentStatuses}
                 </div>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex flex-col items-start gap-2">
-                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                    <button class="btn btn-ghost btn-xs w-full font-display"
                         type="button" onclick="editMember('${member.Id}')" id="edit-button-${member.Id}">
                         <span class="flex items-center justify-center font-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4 mr-2">
-                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                            </svg>
+                            <i class="ph ph-pencil-simple w-4 h-4 mr-2"></i>
                             Edit
                         </span>
                     </button>
-                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none hidden"
+                    <button class="btn btn-ghost btn-xs w-full font-display hidden"
                         type="button" onclick="updateMember('${member.Id}')" id="update-button-${member.Id}">
                         <span class="flex items-center justify-center font-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="w-4 h-4 mr-2"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                            <i class="ph ph-check-circle w-4 h-4 mr-2"></i>
                             Update
                         </span>
                     </button>
-                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none hidden"
+                    <button class="btn btn-ghost btn-xs w-full font-display hidden"
                         type="button" onclick="cancelEdit('${member.Id}')" id="cancel-button-${member.Id}">
                         <span class="flex items-center justify-center font-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="w-4 h-4 mr-2"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>
+                            <i class="ph ph-x-circle w-4 h-4 mr-2"></i>
                             Cancel
                         </span>
                     </button>
-                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none hidden"
+                    <button class="btn btn-ghost btn-xs w-full font-display hidden"
                         type="button" onclick="deleteMember('${member.Id}')" id="delete-button-${member.Id}">
                         <span class="flex items-center justify-center font-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 256 256" class="w-4 h-4 mr-2"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path></svg>
+                            <i class="ph ph-trash w-4 h-4 mr-2"></i>
                             Delete
                         </span>
                     </button>
@@ -275,43 +235,41 @@ function createTableRow(member) {
 function createMahallaTableRow(member) {
     return `
         <tr id="row-${member.Id}" class="font-display">
-            <td class="p-4 border-b border-blue-gray-50">
-                <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900">
+            <td class="p-4 border-b border-base-300">
+                <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content">
                     ${member.Zone || 'N/A'}
                 </p>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex items-center gap-3">
                     <div class="flex flex-col">
-                        <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="name-${member.Id}">
+                        <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content" id="name-${member.Id}">
                             ${member.Name || 'N/A'}
                         </p>
-                        <input type="text" name="username" placeholder="Enter your Username" class="inputuser input input-bordered pl-2 w-48 hidden" id="name-input-${member.Id}" value="${member.Name || ''}" required>
+                        <input type="text" name="username" placeholder="Enter your Username" class="input input-bordered pl-2 w-48 hidden" id="name-input-${member.Id}" value="${member.Name || ''}" required>
                     </div>
                 </div>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex flex-col">
-                    <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="address-${member.Id}">
+                    <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content" id="address-${member.Id}">
                         ${member.Address || 'N/A'}
                     </p>
-                    <input type="text" name="address" placeholder="Enter your Address" class="inputuser input input-bordered pl-2 w-48 hidden" id="address-input-${member.Id}" value="${member.Address || ''}" required>
+                    <input type="text" name="address" placeholder="Enter your Address" class="input input-bordered pl-2 w-48 hidden" id="address-input-${member.Id}" value="${member.Address || ''}" required>
                 </div>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
-                <p class="block font-display text-sm antialiased font-normal leading-normal text-blue-gray-900" id="telephone-${member.Id}">
+            <td class="p-4 border-b border-base-300">
+                <p class="block font-display text-sm antialiased font-normal leading-normal text-base-content" id="telephone-${member.Id}">
                     ${member.Telephone || 'N/A'}
                 </p>
-                <input type="text" name="telephone" placeholder="Enter your Telephone" class="inputuser input input-bordered pl-2 w-48 hidden" id="telephone-input-${member.Id}" value="${member.Telephone || ''}" required>
+                <input type="text" name="telephone" placeholder="Enter your Telephone" class="input input-bordered pl-2 w-48 hidden" id="telephone-input-${member.Id}" value="${member.Telephone || ''}" required>
             </td>
-            <td class="p-4 border-b border-blue-gray-50">
+            <td class="p-4 border-b border-base-300">
                 <div class="flex flex-col items-start gap-2">
-                    <button class="relative w-full select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                    <button class="btn btn-ghost btn-xs w-full font-display"
                         type="button" onclick="editMember('${member.Id}')" id="edit-button-${member.Id}">
                         <span class="flex items-center justify-center font-display">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4 mr-2">
-                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z"></path>
-                            </svg>
+                            <i class="ph ph-pencil-simple w-4 h-4 mr-2"></i>
                             Edit
                         </span>
                     </button>
@@ -321,7 +279,7 @@ function createMahallaTableRow(member) {
     `;
 }
 
-// changing dick 8====D to Dickhennawatte ✅
+// Enable editing mode for a member's details.
 function editMember(memberId) {
     const nameElement = document.getElementById(`name-${memberId}`);
     const nameInput = document.getElementById(`name-input-${memberId}`);
@@ -333,7 +291,6 @@ function editMember(memberId) {
     const updateButton = document.getElementById(`update-button-${memberId}`);
     const cancelButton = document.getElementById(`cancel-button-${memberId}`);
 
-    //  this will make u go into edit modeeee had a MENTAL Breakdown doin this shit
     nameElement.classList.add('hidden');
     nameInput.classList.remove('hidden');
     telephoneElement.classList.add('hidden');
@@ -346,7 +303,7 @@ function editMember(memberId) {
     document.getElementById(`delete-button-${memberId}`).classList.remove('hidden');
 }
 
-// after editing we just update the db 
+// Send updated member data to the backend.
 function updateMember(memberId) {
     const nameInput = document.getElementById(`name-input-${memberId}`);
     const telephoneInput = document.getElementById(`telephone-input-${memberId}`);
@@ -366,7 +323,7 @@ function updateMember(memberId) {
     });
 }
 
-// get the success confirmation and update everything in the table
+// Handle the result of a member update operation.
 function handleMemberUpdateResult(success, memberId) {
     if (success) {
         // Update working now update the bloody UI
@@ -387,17 +344,16 @@ function handleMemberUpdateResult(success, memberId) {
             icon:'success'});
         exitEditMode(memberId);
     } else {
-        // Update failed... fuck.
         alert("Failed to update member information. Please try again.");
     }
 }
 
-// woah woah stop dont change the data
+// Cancel member editing mode.
 function cancelEdit(memberId) {
     exitEditMode(memberId);
 }
 
-// leaving editing mode cya
+// Revert UI from editing mode to display mode.
 function exitEditMode(memberId) {
     const nameElement = document.getElementById(`name-${memberId}`);
     const nameInput = document.getElementById(`name-input-${memberId}`);
@@ -409,7 +365,6 @@ function exitEditMode(memberId) {
     const updateButton = document.getElementById(`update-button-${memberId}`);
     const cancelButton = document.getElementById(`cancel-button-${memberId}`);
 
-    // Toggle visibility to well toggle visibility unfortunatley it wont bring ur dad back
     nameElement.classList.remove('hidden');
     nameInput.classList.add('hidden');
     telephoneElement.classList.remove('hidden');
@@ -422,18 +377,19 @@ function exitEditMode(memberId) {
     document.getElementById(`delete-button-${memberId}`).classList.add('hidden');
 }
 
-// add member row shows up with this beautiful function so dont fuck with it
+// Display the 'Add Member' form row.
 function showAddMemberRow() {
     document.getElementById('add-member-row').classList.remove('hidden');
 }
 
-//add code commeted to learn 
+// Display the 'Add Admin' form row.
 //step 1
 function showAddAdminRow() {
     document.getElementById('add-admin-row').classList.remove('hidden');
 }
 
 //step 2
+// Process and send new admin data to the backend.
 function addNewAdmin() {
     const username = document.getElementById('new-admin-name').value;
     const address = document.getElementById('new-admin-address').value;
@@ -462,7 +418,6 @@ function handleAddAdminResult(successAdmin) {
             title: "Administrator has been successfully added!",
             showConfirmButton: false,
             timer: 1500});
-        // Refresh the member list else how you gonna see the updates u stupid or smth
         const location = document.getElementById('location-header').dataset.shortForm;
         loadLocation(location, document.getElementById('location-header').textContent);
     } else {
@@ -481,7 +436,6 @@ function handleAddMemberResult(success) {
             showConfirmButton: false,
             timer: 1500
           });
-        // Refresh the member list else how you gonna see the updates u stupid or smth
         const location = document.getElementById('location-header').dataset.shortForm;
         loadLocation(location, document.getElementById('location-header').textContent);
     } else {
@@ -489,7 +443,7 @@ function handleAddMemberResult(success) {
     }
 }
 
-// not welcome {user}!   BOOOOOOOOOOOOOOOOOOM!!!
+// Hide the 'Add Member' form row and clear fields.
 function cancelAddMember() {
     document.getElementById('add-member-row').classList.add('hidden');
     // Clear the input fields 
@@ -498,7 +452,7 @@ function cancelAddMember() {
     document.getElementById('new-member-address').value = '';
 }
 
-// welcome {user}!
+// Process and send new member data to the backend.
 function addNewMember() {
     const name = document.getElementById('new-member-name').value;
     const telephone = document.getElementById('new-member-telephone').value;
@@ -519,7 +473,7 @@ function addNewMember() {
     }
 }
 
-// handle it obviously
+// Handle the result of adding a new member.
 function handleAddMemberResult(success) {
     if (success) {
         Swal.fire({
@@ -539,7 +493,7 @@ function handleAddMemberResult(success) {
     }
 }
 
-// get out of here {user}!
+// Initiate member deletion process.
 function deleteMember(memberId) {
     Swal.fire({
         title: "Deleted",
@@ -555,7 +509,7 @@ function deleteMember(memberId) {
     
 }
 
-// trash (sakura) taken out
+// Handle the result of deleting a member.
 function handleDeleteMemberResult(success, memberId) {
     if (success) {
         // Remove the row from the table
@@ -573,7 +527,7 @@ function handleDeleteMemberResult(success, memberId) {
     }
 }
 
-// this shows what location ur currently viewing I See you jhon yes you  from Dickhenawatte
+// Load data for the selected location and update the header.
 function loadLocation(shortForm, fullName) {
     const locationHeader = document.getElementById('location-header');
     updateHeaderText(fullName);
