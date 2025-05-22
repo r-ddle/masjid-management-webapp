@@ -4,6 +4,9 @@ const path = require('path');
 const db = require('./src/config/database'); // Updated path
 const authRoutes = require('./src/routes/authRoutes'); // Updated path
 const userRoutes = require('./src/routes/userRoutes'); // Import user routes
+const memberRoutes = require('./src/routes/memberRoutes'); // Import member routes
+const mahallaMemberRoutes = require('./src/routes/mahallaMemberRoutes'); // Import MahallaMember routes
+const adminRoutes = require('./src/routes/adminRoutes'); // Import Admin routes
 
 const helmet = require('helmet'); // Import helmet
 
@@ -61,6 +64,9 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes); // Mount auth routes under /api/auth
 app.use('/api/users', userRoutes); // Mount user routes under /api/users
+app.use('/api/dashboard', memberRoutes); // Mount member routes under /api/dashboard
+app.use('/api/dashboard/mahallah-members', mahallaMemberRoutes); // Mount MahallaMember routes
+app.use('/api/dashboard/admins', adminRoutes); // Mount Admin routes
 
 // Global error handler (optional, can be expanded in src/middleware)
 // app.use((err, req, res, next) => {
